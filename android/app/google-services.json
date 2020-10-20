@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "742131478771",
+    "firebase_url": "https://campus-market-f0309.firebaseio.com",
+    "project_id": "campus-market-f0309",
+    "storage_bucket": "campus-market-f0309.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742131478771:android:d3b3b069744e668e718786",
+        "android_client_info": {
+          "package_name": "com.example.campus_mart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742131478771-c05upfi2ct7fqtovhv3ektvnh07t1c6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA97Vpmcj7viV50pT_6HlygIJXzxCnTBhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742131478771-c05upfi2ct7fqtovhv3ektvnh07t1c6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
