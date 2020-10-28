@@ -12,7 +12,7 @@ class CurvedNavigationBar extends StatefulWidget {
   final ValueChanged<int> onTap;
   final Curve animationCurve;
   final Duration animationDuration;
-
+  final bool shouldNavigate;
   CurvedNavigationBar(
       {Key key,
       @required this.items,
@@ -22,7 +22,8 @@ class CurvedNavigationBar extends StatefulWidget {
       this.backgroundColor = Colors.blueAccent,
       this.onTap,
       this.animationCurve = Curves.easeOut,
-      this.animationDuration = const Duration(milliseconds: 600)})
+      this.animationDuration = const Duration(milliseconds: 600),
+      this.shouldNavigate})
       : assert(items != null),
         assert(items.length >= 2),
         assert(0 <= initialIndex && initialIndex < items.length),
@@ -67,6 +68,8 @@ class _CurvedNavigationBarState extends State<CurvedNavigationBar>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    navigateTo( widget.shouldNavigate);
+
     return Container(
       color: widget.backgroundColor,
       height: 50.0,
@@ -137,13 +140,16 @@ class _CurvedNavigationBarState extends State<CurvedNavigationBar>
     });
   }
 
-  void navigateTo(int index) {
-    final newPosition = index / _length;
-    setState(() {
-      _startingPos = _pos;
-      _endingIndex = index;
-      _animationController.animateTo(newPosition,
-          duration: widget.animationDuration, curve: widget.animationCurve);
-    });
+  navigateTo( bool shouldNavigate) {
+      print('NavAmine'+shouldNavigate.toString());
+    if (shouldNavigate) {
+    final newPosition = 2 / _length;
+      setState(() {
+        _startingPos = _pos;
+        _endingIndex = 2;
+        _animationController.animateTo(newPosition,
+            duration: widget.animationDuration, curve: widget.animationCurve);
+      });
+    }
   }
 }

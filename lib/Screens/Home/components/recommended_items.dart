@@ -78,6 +78,7 @@ List<Widget> allItems(List<GoodsAd> goodsList, BuildContext context) {
       school: goodAdItem.university,
       price: goodAdItem.itemPrice,
       tag: goodAdItem.itemTitle+goodAdItem.datePosted,
+      imgHash: goodAdItem.itemImgListHash[0],
       press: () {
         Navigator.pushNamed(context, 'item-details',
                       arguments: goodAdItem);

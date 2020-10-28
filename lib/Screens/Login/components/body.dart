@@ -1,11 +1,14 @@
 import 'package:campus_mart/Screens/Login/components/already_have_acct_check.dart';
 import 'package:campus_mart/components/round_button.dart';
 import 'package:campus_mart/services/auth.dart';
+import 'package:campus_mart/utils/sharedpref.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_mart/Screens/Login/components/background.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:campus_mart/Screens/Login/components/rounded_input_field.dart';
 import 'package:campus_mart/Screens/Login/components/rounded_password_field.dart';
+
+import '../../../constants.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -23,6 +26,7 @@ class _BodyState extends State<Body> {
 
   bool _obscureText = true;
   final _formKey = GlobalKey<FormState>();
+  var sharedpref = SharedPreference();
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +99,10 @@ class _BodyState extends State<Body> {
                             error = 'Please enter all required fields';
                           });
                         } else {
+                          
+                          sharedpref.addBoolToSF(hasUserLogin, true);
+                          sharedpref.addStringToSF('email', _email);
+                          sharedpref.addStringToSF('password', _password);
                           Navigator.pushReplacementNamed(context, "home");
                         }
                       });

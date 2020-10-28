@@ -48,6 +48,7 @@ class _BodyState extends State<CategorizeList> {
 
   int selectedCategory = 0;
   String selectedCatString;
+  GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
   Widget buildGridItem(GoodsAd goodsAdItem) {
     bool liked = false;
@@ -124,6 +125,53 @@ class _BodyState extends State<CategorizeList> {
     Orientation orientation = MediaQuery.of(context).orientation;
     return MaterialApp(
       home: Scaffold(
+        key: drawerKey,
+        endDrawer: Drawer(
+          child: ListView(
+            children: [
+              Container(
+                color: Colors.grey[200],
+                child: Row(
+                  children: [
+                    
+
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Text('Home'),
+                leading: Icon(Icons.home),
+                // onTap: navigateTo(2),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                title: Text('Buy'),
+                leading: Icon(Icons.home),
+                // onTap: navigateTo(0),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                title: Text('Sell'),
+                leading: Icon(Icons.home),
+                // onTap: navigateTo(2),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                title: Text('My Carts'),
+                leading: Icon(Icons.home),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(bottom: 15),
@@ -139,9 +187,11 @@ class _BodyState extends State<CategorizeList> {
                           physics: NeverScrollableScrollPhysics(),
                           controller: _pageController,
                           onPageChanged: (index) {},
-                          children: categoryImgAsset.asMap().entries.map((e)=>
-                            buildCatImage(e)
-                          ).toList(),
+                          children: categoryImgAsset
+                              .asMap()
+                              .entries
+                              .map((e) => buildCatImage(e))
+                              .toList(),
                         )),
                     Expanded(
                       child: Container(
@@ -195,7 +245,10 @@ class _BodyState extends State<CategorizeList> {
                               }),
                           IconButton(
                               icon: Icon(Icons.sort, color: Colors.white),
-                              onPressed: () {}),
+                              onPressed: () {
+                                print('drawer Clicked');
+                                drawerKey.currentState.openEndDrawer();
+                              }),
                         ]),
                   ),
                 ),
@@ -246,10 +299,10 @@ class _BodyState extends State<CategorizeList> {
 
   Image buildCatImage(MapEntry<int, String> e) {
     return Image.asset(
-                            categoryImgAsset[e.key],
-                            fit: BoxFit.cover,
-                            height: 200,
-                          );
+      categoryImgAsset[e.key],
+      fit: BoxFit.cover,
+      height: 200,
+    );
   }
 }
 

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:blurhash/blurhash.dart';
 import 'package:campus_mart/reusablewidget/custom_dialog.dart';
 import 'package:campus_mart/services/database.dart';
 import 'package:campus_mart/utils/loader_util.dart';
@@ -109,6 +111,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
   File _image;
   final picker = ImagePicker();
   List<File> images = <File>[];
+  List<String> imgHashList = <String>[];
 
   Future _imgFromCamera() async {
     final pickedFile =
@@ -118,6 +121,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         images.add(_image);
+        getImageHash(_image).then((value) => imgHashList.add(value));
       } else {
         print('No image selected.');
       }
@@ -131,6 +135,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         images.add(_image);
+        getImageHash(_image).then((value) => imgHashList.add(value));
       } else {
         print('No image selected.');
       }
@@ -142,6 +147,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
     setState(() {
       print('ImageH0' + images.length.toString() + index.toString());
       images = List.from(images)..removeAt(index);
+      imgHashList = List.from(imgHashList)..removeAt(index);
 
       print('Image0' + images.length.toString());
     });
@@ -192,6 +198,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                   user.phone,
                   isNegotiable,
                   uploadUrlList,
+                  imgHashList,
                   _featureList,
                   false,
                   false)
@@ -350,6 +357,14 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
     // } else {
     //   return Container();
     // }
+  }
+
+  Future<String> getImageHash(File image) async {
+    Uint8List byte = await image.readAsBytes();
+
+    var blurHash = await BlurHash.encode(byte, 4, 3);
+    print('ImageHash' + blurHash);
+    return blurHash;
   }
 
   @override

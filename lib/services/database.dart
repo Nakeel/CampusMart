@@ -88,6 +88,7 @@ class DatabaseService {
       String phone,
       bool isNegotiable,
       List<String> itemImgList,
+      List<String> itemImgListHash,
       List<String> itemFeatures,
       bool isSold,
       bool isPromoted) async {
@@ -103,6 +104,7 @@ class DatabaseService {
         'itemPrice': itemPrice,
         'phone': phone,
         'itemImgList': itemImgList,
+        'itemImgListHash': itemImgListHash,
         'isNegotiable': isNegotiable,
         'datePosted': datePosted,
         'isSold': isSold,

@@ -4,7 +4,7 @@ class GoodsAd {
 
   String fullname, datePosted, category, itemTitle;
   bool isNegotiable, isPromoted, isSold;
-  List<dynamic> itemFeatures, itemImgList;
+  List<dynamic> itemFeatures, itemImgList, itemImgListHash;
 
   GoodsAd.fromMap(Map<String, dynamic> data) {
     uid = data['uuid'];
@@ -17,6 +17,7 @@ class GoodsAd {
     sellerPhoneNo = data['phone'];
     itemFeatures = data['itemFeatures'];
     itemImgList = data['itemImgList'];
+    itemImgListHash = data['itemImgListHash'];
     isPromoted = data['isPromoted'];
     datePosted = data['datePosted'];
     itemTitle = data['itemTitle'];

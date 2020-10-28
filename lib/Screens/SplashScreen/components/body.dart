@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:campus_mart/Screens/Onboarding/onboarding_screen.dart';
 import 'package:campus_mart/constants.dart';
+import 'package:campus_mart/services/auth.dart';
 import 'package:campus_mart/utils/circular_logo.dart';
 import 'package:campus_mart/utils/sharedpref.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   bool showLoadingBar = false;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -27,19 +29,37 @@ class _BodyState extends State<Body> {
         .then((value) => handleHasRun(value));
   }
 
+  _loginUser(String email, String password) async {
+    setState(() {
+      showLoadingBar = true;
+    });
+    await _authService.signInWithEmailAndPass(email, password).then((result) {
+      if (result == null) {
+        setState(() {
+          showLoadingBar = false;
+          Navigator.pushReplacementNamed(context, "log-in");
+        });
+      } else {
+        Navigator.pushReplacementNamed(context, "home");
+      }
+    });
+  }
+
   Future<void> handleUserLoggin(bool hasLogin) async {
     String destRoute;
     if (!hasLogin) {
       // SharedPreference().addBoolToSF(hasUserLogin, true);
       destRoute = "welcome";
     } else {
-      var stillLoggedIn = await SharedPreference().getBoolValuesSF(hasUserLogin);
-      if(stillLoggedIn){
-        destRoute = "log-in";
-      }else{
+      var stillLoggedIn =
+          await SharedPreference().getBoolValuesSF(hasUserLogin);
+      if (stillLoggedIn) {
+        var email = await SharedPreference().getStringValuesSF('email');
+        var password = await SharedPreference().getStringValuesSF('password');
+        _loginUser(email, password);
+      } else {
         destRoute = "home";
       }
-      
     }
     Navigator.pushReplacementNamed(context, destRoute);
   }
@@ -78,14 +98,23 @@ class _BodyState extends State<Body> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularLogoItem(),
+                  // CircularLogoItem(),
+                  Center(
+                    child: CircleAvatar(
+                      radius: 50.0,
+                      child: Image.asset(
+                        "assets/images/cm_logo.png",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
                   ),
                   Text(
                     "Campus Mart",
                     style: TextStyle(
-                        color: kPrimaryColor,
+                        color: Colors.white,
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold),
                   )
@@ -100,14 +129,14 @@ class _BodyState extends State<Body> {
               Visibility(
                 visible: showLoadingBar,
                 child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 20.0)),
               Text(
                 "Flexible Online Store \n For Students",
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: Colors.white,
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -119,4 +148,3 @@ class _BodyState extends State<Body> {
     ));
   }
 }
-

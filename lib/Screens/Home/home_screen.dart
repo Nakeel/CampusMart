@@ -26,10 +26,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var navBtnSize = 20.0;
-  var navActiveBtnSize = 0.0;
-  var currentNavPosition = 2;
+  var navBtnSize;
+  var navActiveBtnSize;
   DateTime currentBackPressTime;
+  int _temp;
+  bool _shouldNavigate;
+  CurvedNavigationBar _curvedNavigationBar;
 
   List<Widget> navBarIconList = [
     Icon(
@@ -59,7 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _temp = 2;
+    navBtnSize = 20.0;
+    navActiveBtnSize = 0.0;
+    _shouldNavigate = false;
+  }
+
   GlobalKey<ScaffoldState> drawerKey = GlobalKey();
+  
+          
   // StreamProvider<QuerySnapshot>.value(
   //     value: DatabaseService().users,
   String _currentScreen = "Home";
@@ -91,9 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius:
                         BorderRadius.only(bottomLeft: Radius.circular(26)),
                   ),
-                  accountName: Text('user.fullname'),
-                  accountEmail: Text('user.username'),
-                  onDetailsPressed: navigateTo(4),
+                  accountName: Text('user fullname'),
+                  accountEmail: Text('user email'),
                   currentAccountPicture: ClipRRect(
                     borderRadius: BorderRadius.circular(70),
                     child: Image(
@@ -110,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text('Home'),
                   leading: Icon(Icons.home),
-                  onTap: navigateTo(2),
+                  // onTap: navigateTo(2),
                 ),
                 SizedBox(
                   height: 10,
@@ -118,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text('Buy'),
                   leading: Icon(Icons.home),
-                  onTap: navigateTo(0),
+                  // onTap: navigateTo(0),
                 ),
                 SizedBox(
                   height: 10,
@@ -126,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text('Sell'),
                   leading: Icon(Icons.home),
-                  onTap: navigateTo(2),
+                  // onTap: navigateTo(2),
                 ),
                 SizedBox(
                   height: 10,
@@ -156,18 +168,25 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: StreamProvider<CustomUserInfo>.value(
               value: DatabaseService().userData(userData.uid),
-              child: buildBody(currentNavPosition)),
+              child: _buildBody(_temp)),
           bottomNavigationBar: CurvedNavigationBar(
             color: kPrimaryColor.withOpacity(0.7),
             backgroundColor: kPrimaryColor.withOpacity(0.1),
             buttonBackgroundColor: kPrimaryColor.withOpacity(0.7),
             initialIndex: 2,
             items: navBarIconList,
+            shouldNavigate: _shouldNavigate,
             animationDuration: Duration(milliseconds: 400),
             animationCurve: Curves.bounceInOut,
             onTap: (index) {
-              navigateTo(index);
-              var currentIcon = navBarIconList[index] as Icon;
+              if (index != _temp) {
+                setState(() {
+                  _shouldNavigate = false;
+                  _temp = index;
+                  _currentScreen = setAppTitle(index);
+                });
+                var currentIcon = navBarIconList[index] as Icon;
+              }
             },
           ),
         ));
@@ -175,14 +194,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   navigateTo(index) {
     setState(() {
-      currentNavPosition = index;
+      _temp = index;
       _currentScreen = setAppTitle(index);
     });
   }
 
   bool backPressOnce = false;
   Future<bool> _closeApp(BuildContext context) async {
-    if (currentNavPosition == 2) {
+    if (_temp == 2) {
       if (backPressOnce) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
         return true;
@@ -201,14 +220,16 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else {
       setState(() {
-        currentNavPosition = 2;
-        setAppTitle(2);
+        _temp = 2;
+        _shouldNavigate = true;
+      _currentScreen = setAppTitle(2);
       });
     }
     return false;
   }
 
-  Widget buildBody(int index) {
+  Widget _buildBody(int index) {
+    print('NavInt' + index.toString());
     if (index == 2) {
       return Body();
     } else if (index == 1) {
@@ -219,6 +240,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return AddAdPostMain();
     } else if (index == 4) {
       return UserProfileScreen();
+    } else {
+      return Body();
     }
   }
 

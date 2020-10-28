@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 
 import '../../../constants.dart';
 
@@ -10,11 +11,12 @@ class RecommendedItemCard extends StatelessWidget {
       this.school,
       this.price,
       this.press,
-      this.tag})
+      this.tag,
+      this.imgHash})
       : super(key: key);
 
   final String image, title, school;
-  final String price, tag;
+  final String price, tag, imgHash;
   final Function press;
 
   @override
@@ -34,12 +36,25 @@ class RecommendedItemCard extends StatelessWidget {
               Hero(
                 tag: tag,
                 transitionOnUserGestures: true,
-                child: Image(
-                  image: NetworkImage(image),
-                  width: (size.width * 0.4),
+                child: Container(
+                  
                   height: 170,
-                  fit: BoxFit.cover,
+                  width: (size.width * 0.4),
+                child: BlurHash(
+                  color: Colors.blueGrey[100],
+                  hash: imgHash,
+                  image: image,
+                  imageFit: BoxFit.cover,
+                  duration: Duration(seconds: 5),
+                  curve: Curves.easeOut,
                 ),
+                ),
+                // child: Image(
+                //   image: NetworkImage(image),
+                //   width: (size.width * 0.4),
+                //   height: 170,
+                //   fit: BoxFit.cover,
+                // ),
               ),
               Container(
                 padding: EdgeInsets.all(kDefaultPadding / 2),
@@ -60,7 +75,7 @@ class RecommendedItemCard extends StatelessWidget {
                     children: <Widget>[
                       Flexible(
                         flex: 30,
-                                              child: Column(
+                        child: Column(
                           children: [
                             Text(
                               title.toUpperCase(),
@@ -83,9 +98,9 @@ class RecommendedItemCard extends StatelessWidget {
                       Spacer(),
                       Flexible(
                         flex: 15,
-                                              child: Text(
+                        child: Text(
                           "\u{20A6}$price",
-                              overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
                               .button

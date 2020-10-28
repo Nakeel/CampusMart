@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:campus_mart/Screens/Home/components/background.dart';
 import 'package:campus_mart/Screens/Home/components/category_list.dart';
 import 'package:campus_mart/Screens/Home/components/featured_items.dart';
 import 'package:campus_mart/Screens/Home/components/header_with_searchbox.dart';
@@ -9,11 +12,8 @@ import 'package:campus_mart/models/user.dart';
 import 'package:campus_mart/models/user_info.dart';
 import 'package:campus_mart/notifier/goods_ad_notifier.dart';
 import 'package:campus_mart/notifier/wants_notifier.dart';
-import 'package:campus_mart/reusablewidget/clip_container.dart';
 import 'package:campus_mart/services/database.dart';
-import 'package:campus_mart/utils/sharedpref.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,27 +29,37 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String _username;
+  String username, firstname, email, fullname;
+  CustomUserInfo user;
+
   @override
   void initState() {
     GoodAdNotifier goodsNotifier =
         Provider.of<GoodAdNotifier>(context, listen: false);
     DatabaseService().getGoodAds(goodsNotifier);
-    
+
     WantsNotifier wantsNotifier =
         Provider.of<WantsNotifier>(context, listen: false);
     DatabaseService().getWants(wantsNotifier);
-
+    username = "User";
+    email = "User email";
+    fullname = 'User Name';
     super.initState();
-  } 
+
+    Timer(Duration(seconds: 4), () {
+      setState(() {
+        username = user.username;
+        email = user.email;
+        fullname = user.fullname;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<CustomUserInfo>(context);
-    WantsNotifier wantsNotifier =
-        Provider.of<WantsNotifier>(context);
+     user = Provider.of<CustomUserInfo>(context);
+    WantsNotifier wantsNotifier = Provider.of<WantsNotifier>(context);
     GoodAdNotifier goodsNotifier = Provider.of<GoodAdNotifier>(context);
-    
 
     Size size = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -69,23 +79,23 @@ class _BodyState extends State<Body> {
               size: size,
               userNameStyle: Body.userNameStyle,
               // username: user.fullname,
-              fullname: user.fullname,
-              username: user.username,
-
+              fullname: fullname,
+              username: username,
             ),
             TitleWithMoreBtn(
               title: "Recommended",
               press: () {},
             ),
-            
-
-
-            RecommendedItems(  goodsList:
-              goodsNotifier.goodsAdList,),
+            RecommendedItems(
+              goodsList: goodsNotifier.goodsAdList,
+            ),
             TitleWithMoreBtn(title: "Feature Items", press: () {}),
-            FeaturedItems(listWants: wantsNotifier.wantList,),
+            FeaturedItems(
+              listWants: wantsNotifier.wantList,
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25.0,horizontal: 0.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 25.0, horizontal: 0.0),
               child: CarouselSlider(
                   aspectRatio: 16 / 7,
                   autoPlay: true,
@@ -163,7 +173,9 @@ class _BodyState extends State<Body> {
               children: [
                 RecommendedItemCard(
                   tag: 'jdjhsd',
-                  image: "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2FvRjT4dV118d2933fSlqMBTR2%2FStanding%20fan0?alt=media&token=9c2e9096-90fc-4499-abdf-2ece0ea7470f",
+                  image:
+                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
+                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
                   title: "Samantha",
                   school: "Russia",
                   price: "440",
@@ -171,23 +183,29 @@ class _BodyState extends State<Body> {
                 ),
                 RecommendedItemCard(
                   tag: 'kjdfd',
-                  image: "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2FvRjT4dV118d2933fSlqMBTR2%2FStanding%20fan0?alt=media&token=9c2e9096-90fc-4499-abdf-2ece0ea7470f",
+                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
+                  image:
+                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
                   title: "Samantha",
                   school: "Russia",
                   price: "440",
                   press: () {},
                 ),
                 RecommendedItemCard(
-                  image: "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2FvRjT4dV118d2933fSlqMBTR2%2FStanding%20fan0?alt=media&token=9c2e9096-90fc-4499-abdf-2ece0ea7470f",
+                  image:
+                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
                   title: "Samantha",
+                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
                   tag: 'jjdfjhdf',
                   school: "Russia",
                   price: "440",
                   press: () {},
                 ),
                 RecommendedItemCard(
-                  image: "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2FvRjT4dV118d2933fSlqMBTR2%2FStanding%20fan0?alt=media&token=9c2e9096-90fc-4499-abdf-2ece0ea7470f",
+                  image:
+                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
                   title: "Samantha",
+                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
                   tag: 'jkdjkf',
                   school: "Russia",
                   price: "440",
