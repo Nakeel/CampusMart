@@ -8,7 +8,10 @@ import 'package:campus_mart/Screens/wants/user_wants_main.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/user.dart';
 import 'package:campus_mart/models/user_info.dart';
+import 'package:campus_mart/reusablewidget/custom_dialog.dart';
+import 'package:campus_mart/services/auth.dart';
 import 'package:campus_mart/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +19,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:campus_mart/Screens/Home/components/body.dart';
 import 'package:campus_mart/utils/curved_nav_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+
+import 'components/menu_tile_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String tag = "home";
@@ -29,8 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   var navBtnSize;
   var navActiveBtnSize;
   DateTime currentBackPressTime;
-  int _temp;
+  // int _temp;
+  int _currentIndex = 2;
+  int _selectedIndex = 0;
   bool _shouldNavigate;
+  bool _isLoading = false;
+  bool _isActive = false;
+  final AuthService _authService = AuthService();
   CurvedNavigationBar _curvedNavigationBar;
 
   List<Widget> navBarIconList = [
@@ -64,15 +75,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _temp = 2;
+    // _temp = 2;
+    _selectedIndex = 2;
     navBtnSize = 20.0;
     navActiveBtnSize = 0.0;
     _shouldNavigate = false;
   }
 
   GlobalKey<ScaffoldState> drawerKey = GlobalKey();
-  
-          
+
   // StreamProvider<QuerySnapshot>.value(
   //     value: DatabaseService().users,
   String _currentScreen = "Home";
@@ -80,6 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
+    Size size = MediaQuery.of(context).size;
+    print('Selected ' + _selectedIndex.toString());
     // final user = Provider.of<CustomUserInfo>(context);
 
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -119,33 +132,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                ListTile(
-                  title: Text('Home'),
-                  leading: Icon(Icons.home),
-                  // onTap: navigateTo(2),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  title: Text('Buy'),
-                  leading: Icon(Icons.home),
-                  // onTap: navigateTo(0),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  title: Text('Sell'),
-                  leading: Icon(Icons.home),
-                  // onTap: navigateTo(2),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  title: Text('My Carts'),
-                  leading: Icon(Icons.home),
+                Column(
+                  children: dashBoardCatList
+                      .asMap()
+                      .entries
+                      .map(
+                        (e) => MenuTileWidget(
+                          press: () {
+                            // Navigator.of(context).pop();
+                            drawerKey.currentState.openEndDrawer();
+                            Timer(Duration(milliseconds: 250),
+                                () => navigateTo(e.key));
+                          },
+                          icon: dashBoardCatIconList[e.key],
+                          title: dashBoardCatList[e.key],
+                          index: e.key,
+                          selectedIndex: _selectedIndex,
+                        ),
+                      )
+                      .toList(),
                 ),
                 SizedBox(
                   height: 10,
@@ -168,21 +173,25 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: StreamProvider<CustomUserInfo>.value(
               value: DatabaseService().userData(userData.uid),
-              child: _buildBody(_temp)),
+              child: LoadingOverlay(
+                  isLoading: _isLoading, child: _buildBody(_selectedIndex))),
           bottomNavigationBar: CurvedNavigationBar(
             color: kPrimaryColor.withOpacity(0.7),
             backgroundColor: kPrimaryColor.withOpacity(0.1),
             buttonBackgroundColor: kPrimaryColor.withOpacity(0.7),
             initialIndex: 2,
+            selectedIndex: _selectedIndex,
             items: navBarIconList,
+            isActive: _isActive,
             shouldNavigate: _shouldNavigate,
             animationDuration: Duration(milliseconds: 400),
             animationCurve: Curves.bounceInOut,
             onTap: (index) {
-              if (index != _temp) {
+              if (index != _selectedIndex && !_isLoading) {
                 setState(() {
                   _shouldNavigate = false;
-                  _temp = index;
+                  // _temp = index;
+                  _selectedIndex = index;
                   _currentScreen = setAppTitle(index);
                 });
                 var currentIcon = navBarIconList[index] as Icon;
@@ -193,15 +202,44 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   navigateTo(index) {
-    setState(() {
-      _temp = index;
-      _currentScreen = setAppTitle(index);
-    });
+    if (index == dashBoardCatList.length - 1) {
+      showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+          title: 'Log Out',
+          description: 'Do you want to sign out ',
+          primaryButtonText: 'Sign Out',
+          primaryButtonFunc: () {
+            // setState(() {
+            //   _isLoading = true;
+            //   _isActive = true;
+            // });
+            // _authService.signOut().whenComplete((){
+
+            Navigator.of(context).pop();
+            Navigator.pushReplacementNamed(context, 'log-in');
+            // });
+          },
+          secButtonTxt: 'Close',
+          secButtonFunc: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    } else {
+      setState(() {
+        // _temp = index;
+        _shouldNavigate = true;
+        _selectedIndex = index;
+        _currentScreen = setAppTitle(index);
+      });
+    }
   }
 
   bool backPressOnce = false;
   Future<bool> _closeApp(BuildContext context) async {
-    if (_temp == 2) {
+    // if (_temp == 2) {
+    if (_selectedIndex == 2) {
       if (backPressOnce) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
         return true;
@@ -220,9 +258,10 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else {
       setState(() {
-        _temp = 2;
+        // _temp = 2;
         _shouldNavigate = true;
-      _currentScreen = setAppTitle(2);
+        _selectedIndex = 2;
+        _currentScreen = setAppTitle(2);
       });
     }
     return false;
@@ -268,20 +307,24 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           // ignore: missing_required_param
-          child: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-            ),
-          ),
+          child: 
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: Icon(
+          //     Icons.shopping_cart,
+          //     color: Colors.white,
+          //   ),
+          // ),
+          Container(width: 40,)
         )
       ],
       title: Center(child: Text(_currentScreen)),
       leading: IconButton(
         icon: SvgPicture.asset("assets/icons/menu.svg"),
         onPressed: () {
-          drawerKey.currentState.openDrawer();
+          if (!_isLoading) {
+            drawerKey.currentState.openDrawer();
+          }
         },
       ),
     );

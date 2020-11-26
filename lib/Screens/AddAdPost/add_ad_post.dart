@@ -359,6 +359,8 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
     // }
   }
 
+
+
   Future<String> getImageHash(File image) async {
     Uint8List byte = await image.readAsBytes();
 
@@ -576,8 +578,6 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                                     ),
                                   ),
                                   Container(
-                                    child: Positioned(
-                                      right: 5,
                                       child: Column(
                                         children: [
                                           Text(
@@ -603,11 +603,10 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                                           ),
                                         ],
                                       ),
-                                    ),
+                                   
                                   ),
                                 ],
                               ),
-                              // ),
                             ),
                           ],
                         ),

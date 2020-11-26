@@ -18,32 +18,37 @@ class TitleAndPrice extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Row(
         children: <Widget>[
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: "$title\n",
-                  style: Theme.of(context).textTheme.headline4.copyWith(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: "$country",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.w300,
+          Expanded(
+            flex: 20,
+                      child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "$title\n",
+                    style: Theme.of(context).textTheme.headline5.copyWith(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                  TextSpan(
+                    text: "$country",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          Spacer(),
-          Text(
-            "\u{20A6}$price",
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                .copyWith(color: kPrimaryColor),
+          Expanded(
+            flex: 5,
+                      child: Text(
+              "\u{20A6}$price",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  .copyWith(color: kPrimaryColor),
+            ),
           )
         ],
       ),

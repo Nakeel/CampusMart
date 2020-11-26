@@ -3,16 +3,19 @@ import 'package:campus_mart/utils/nav_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
+// ignore: must_be_immutable
 class CurvedNavigationBar extends StatefulWidget {
   final List<Widget> items;
   final int initialIndex;
+  final int selectedIndex;
   final Color color;
   final Color buttonBackgroundColor;
   final Color backgroundColor;
   final ValueChanged<int> onTap;
+  final bool isActive;
   final Curve animationCurve;
   final Duration animationDuration;
-  final bool shouldNavigate;
+  bool shouldNavigate;
   CurvedNavigationBar(
       {Key key,
       @required this.items,
@@ -23,7 +26,9 @@ class CurvedNavigationBar extends StatefulWidget {
       this.onTap,
       this.animationCurve = Curves.easeOut,
       this.animationDuration = const Duration(milliseconds: 600),
-      this.shouldNavigate})
+      this.shouldNavigate,
+      this.selectedIndex,
+      this.isActive})
       : assert(items != null),
         assert(items.length >= 2),
         assert(0 <= initialIndex && initialIndex < items.length),
@@ -42,6 +47,8 @@ class _CurvedNavigationBarState extends State<CurvedNavigationBar>
   Widget _icon;
   AnimationController _animationController;
   int _length;
+
+  bool hasRun = false;
 
   @override
   void initState() {
@@ -68,7 +75,13 @@ class _CurvedNavigationBarState extends State<CurvedNavigationBar>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    navigateTo( widget.shouldNavigate);
+    if (widget.shouldNavigate) {
+      navigateTo(widget.shouldNavigate, widget.selectedIndex);
+      widget.shouldNavigate = false;
+    }
+    print('Selected' +
+        widget.shouldNavigate.toString() +
+        widget.selectedIndex.toString());
 
     return Container(
       color: widget.backgroundColor,
@@ -128,25 +141,27 @@ class _CurvedNavigationBarState extends State<CurvedNavigationBar>
   }
 
   void _buttonTap(int index) {
-    if (widget.onTap != null) {
-      widget.onTap(index);
-    }
-    final newPosition = index / _length;
-    setState(() {
-      _startingPos = _pos;
-      _endingIndex = index;
-      _animationController.animateTo(newPosition,
-          duration: widget.animationDuration, curve: widget.animationCurve);
-    });
-  }
-
-  navigateTo( bool shouldNavigate) {
-      print('NavAmine'+shouldNavigate.toString());
-    if (shouldNavigate) {
-    final newPosition = 2 / _length;
+    if (!widget.isActive) {
+      if (widget.onTap != null) {
+        widget.onTap(index);
+      }
+      final newPosition = index / _length;
       setState(() {
         _startingPos = _pos;
-        _endingIndex = 2;
+        _endingIndex = index;
+        _animationController.animateTo(newPosition,
+            duration: widget.animationDuration, curve: widget.animationCurve);
+      });
+    }
+  }
+
+  navigateTo(bool shouldNavigate, int index) {
+    print('NavAmine' + shouldNavigate.toString());
+    if (shouldNavigate) {
+      final newPosition = index / _length;
+      setState(() {
+        _startingPos = _pos;
+        _endingIndex = index;
         _animationController.animateTo(newPosition,
             duration: widget.animationDuration, curve: widget.animationCurve);
       });

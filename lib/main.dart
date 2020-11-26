@@ -4,10 +4,12 @@ import 'package:campus_mart/Screens/Home/components/category_list.dart';
 import 'package:campus_mart/Screens/ItemDetails/item_details_screen.dart';
 import 'package:campus_mart/Screens/Login/login_screen.dart';
 import 'package:campus_mart/Screens/Onboarding/onboarding_screen.dart';
+import 'package:campus_mart/Screens/Search/main_search_screen.dart';
 import 'package:campus_mart/Screens/Signup/signup_screen.dart';
 import 'package:campus_mart/Screens/SplashScreen/splash_screen.dart';
 import 'package:campus_mart/Screens/Welcome/welcome_screen.dart';
 import 'package:campus_mart/Screens/Home/home_screen.dart';
+import 'package:campus_mart/Screens/itemInfo/item_info_screen.dart';
 import 'package:campus_mart/Screens/wants/ad_info/ad_user_info.dart';
 import 'package:campus_mart/Screens/wants/ad_info/ad_user_info_screen.dart';
 import 'package:campus_mart/Screens/wants/user_wants_main.dart';
@@ -95,24 +97,32 @@ class MyApp extends StatelessWidget {
                       duration = 1000;
                       pageTransitionType = PageTransitionType.rippleLeftDown;
                       return SignUpScreen();
+
+                    case MainSearchScreen.tag:
+                      duration = 1000;
+                      pageTransitionType = PageTransitionType.fadeIn;
+                      return MainSearchScreen();
+
                     case HomeScreen.tag:
                       duration = 1000;
                       pageTransitionType = PageTransitionType.rippleLeftDown;
                       return HomeScreen();
 
                     case ItemDetailsScreen.tag:
-                    // final Wants wantArgs = routeSettings.arguments;
-                      
-                    //   duration = 400;
-                    //   pageTransitionType = PageTransitionType.slideInUp;
-                    //   return AdUserInfo(
-                    //     want: wantArgs
-                    //   );
                     final GoodsAd goodArgs = routeSettings.arguments;
                       
                       duration = 1000;
                       pageTransitionType = PageTransitionType.rippleLeftDown;
                       return ItemDetailsScreen(
+                        goodItem:  goodArgs
+                      );
+
+                    case ItemInfoScreen.tag:
+                    final GoodsAd goodArgs = routeSettings.arguments;
+                      
+                      duration = 1000;
+                      pageTransitionType = PageTransitionType.rippleLeftDown;
+                      return ItemInfoScreen(
                         goodItem:  goodArgs
                       );
 

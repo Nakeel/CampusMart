@@ -1,6 +1,4 @@
-import 'dart:async';
 
-import 'package:campus_mart/Screens/ItemDetails/item_details_screen.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/goods_ad_data.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +78,7 @@ List<Widget> allItems(List<GoodsAd> goodsList, BuildContext context) {
       tag: goodAdItem.itemTitle+goodAdItem.datePosted,
       imgHash: goodAdItem.itemImgListHash[0],
       press: () {
-        Navigator.pushNamed(context, 'item-details',
+        Navigator.pushNamed(context, 'item-info',
                       arguments: goodAdItem);
         //     MaterialPageRoute(builder: (context) => ItemDetailsScreen()));
       },

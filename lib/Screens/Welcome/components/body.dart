@@ -69,7 +69,8 @@ class _BodyState extends State<Body> {
               RoundedButton(
                 text: "Sign Up",
                 press: () {
-                  Navigator.of(context).pushNamed('register');
+                    Navigator.of(context).pushNamed('sign-up');
+                  // Navigator.of(context).pushNamed('register');
 
                   // Navigator.push(context,
                   //   MaterialPageRoute(
@@ -82,43 +83,44 @@ class _BodyState extends State<Body> {
                 textColor: Colors.black,
                 color: kPrimaryLightColor,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Or",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              RoundedButton(
-                text: "Alternative Sign up ",
-                press: (){
-                    Navigator.of(context).pushNamed('sign-up');
-                  // dynamic result = await _authService
-                  //     .anonSignIn()
-                  //     .whenComplete(() => setState(() {
-                  //   print(_showLoader);
-                  //           _showLoader = false;
-                  //         }));
-                  // if (result == null) {
-                  //   print('error signing in');
-                  // } else {
-                  //   print('signed in');
-                  //   print(result);
-                  // }
-                  // Navigator.push(context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return SignUpScreen();
-                  //     },
-                  //   ),
-                  // );
-                },
-                textColor: Colors.black,
-                color: kPrimaryLightColor,
-              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Text(
+              //   "Or",
+              //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              // ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // RoundedButton(
+              //   text: "Alternative Sign up ",
+              //   press: (){
+              //       Navigator.of(context).pushNamed('sign-up');
+              //     // dynamic result = await _authService
+              //     //     .anonSignIn()
+              //     //     .whenComplete(() => setState(() {
+              //     //   print(_showLoader);
+              //     //           _showLoader = false;
+              //     //         }));
+              //     // if (result == null) {
+              //     //   print('error signing in');
+              //     // } else {
+              //     //   print('signed in');
+              //     //   print(result);
+              //     // }
+              //     // Navigator.push(context,
+              //     //   MaterialPageRoute(
+              //     //     builder: (context) {
+              //     //       return SignUpScreen();
+              //     //     },
+              //     //   ),
+              //     // );
+              //   },
+              //   textColor: Colors.black,
+              //   color: kPrimaryLightColor,
+              // ),
+            
             ],
           ),
         ),

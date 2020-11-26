@@ -5,6 +5,7 @@ class Wants {
    String email;
    String phone;
  String university;
+ String userImgUrl;
    String fullname, username, colorId,datePosted,category,post;
 
   Wants.fromMap(Map<String, dynamic> data){
@@ -16,6 +17,7 @@ class Wants {
     fullname = data['fullname'];
     username = data['username'];
     datePosted = data['datePosted'];
+    userImgUrl = data['userImgUrl'];
     post = data['post'];
     category = data['category'];
   }

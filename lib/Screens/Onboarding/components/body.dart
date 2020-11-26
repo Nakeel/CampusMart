@@ -67,32 +67,34 @@ class _BodyState extends State<Body> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Positioned(
-              top: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Campus Mart",
-                    style: Body.appNameStyle,
-                  ),
-                  Text(
-                    "Skip",
-                    style: Body.appNameStyle,
-                  ),
-                ],
-              ),
+            child:
+                // Positioned(
+                //   top: 0,
+                //   child:
+                Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Campus Market",
+                  style: Body.appNameStyle,
+                ),
+                Text(
+                  "Skip",
+                  style: Body.appNameStyle,
+                ),
+              ],
+              // ),
             ),
           ),
           Image.asset("assets/images/buy.png"),
           Column(
             children: <Widget>[
               Text(
-                "Online",
+                "Buy and",
                 style: Body.greyStyle,
               ),
               Text(
-                "Gambling",
+                "Sell",
                 style: Body.boldStyle,
               ),
               SizedBox(
@@ -101,7 +103,7 @@ class _BodyState extends State<Body> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  "A nice app to enjoy and \nearn seamlessly",
+                  "Absolutely anything within your campus region",
                   style: Body.infoStyle,
                 ),
               ),
@@ -122,7 +124,7 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Campus Mart",
+                  "Campus Market",
                   style: Body.appNameStyleWhite,
                 ),
                 Text(
@@ -136,11 +138,11 @@ class _BodyState extends State<Body> {
           Column(
             children: <Widget>[
               Text(
-                "Awesome",
+                "Friendly",
                 style: Body.desHeaderStyleWhite,
               ),
               Text(
-                "Community",
+                "UI",
                 style: Body.descStyleWhite,
               ),
               SizedBox(
@@ -149,7 +151,7 @@ class _BodyState extends State<Body> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
-                  "A nice app to enjoy and \nearn seamlessly",
+                  "Like your whatsapp status post what you need to buy and get a seller in no time \nwithin your campus",
                   style: Body.infoStyle,
                 ),
               ),
@@ -170,12 +172,17 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Campus Mart",
+                  "Campus Market",
                   style: Body.appNameStyleWhite,
                 ),
-                Text(
-                  "Skip",
-                  style: Body.appNameStyleWhite,
+                InkWell(
+                  onTap: () {
+                    // Navigator.pushNamed(context, "welcome");
+                  },
+                  child: Text(
+                    "Skip",
+                    style: Body.appNameStyleWhite,
+                  ),
                 ),
               ],
             ),
@@ -184,11 +191,11 @@ class _BodyState extends State<Body> {
           Column(
             children: <Widget>[
               Text(
-                "Online",
+                "Post",
                 style: Body.descStyleWhite,
               ),
               Text(
-                "Gaming",
+                "Products",
                 style: Body.desHeaderStyleWhite,
               ),
               SizedBox(
@@ -197,7 +204,7 @@ class _BodyState extends State<Body> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  "A nice app to enjoy and \nearn seamlessly",
+                  "Get buyers within your \ncampus quickly",
                   style: Body.infoStyle,
                 ),
               ),

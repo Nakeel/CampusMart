@@ -28,6 +28,10 @@ class AuthService {
     }
   }
 
+   Future  signOut()  async{
+    await _auth.signOut();
+}
+
   //Register with email and password
   Future registerWithEmailAndPass(String email, String pass,String username,String phone, String fullname,String university) async {
     try {

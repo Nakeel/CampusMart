@@ -182,6 +182,9 @@ class _AddWantsMainState extends State<AddWantsMain> {
                                     "$_selectedColor",
                                     currentDate,
                                     post,
+                                    widget.user.profileImgUrl,
+                                    widget.user.profileImgHash,
+                                    widget.user.phone,
                                     selectedCategory,
                                     false,
                                     false)

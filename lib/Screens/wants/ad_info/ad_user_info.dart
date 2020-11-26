@@ -5,6 +5,7 @@ import 'package:campus_mart/models/wants_data.dart';
 import 'package:campus_mart/reusablewidget/confirm_message_app.dart';
 import 'package:campus_mart/utils/expandable_fab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdUserInfo extends StatefulWidget {
@@ -214,12 +215,12 @@ class _AdUserInfoState extends State<AdUserInfo> {
                                   primaryButtonText: 'Close',
                                   primaryButtonFunc: () {
                                     launchWhatsApp(
-                                        phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Mart');
+                                        phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Martet');
                                     Navigator.of(context).pop();
                                   },
                                   secButtonFunc: () {
                                     launchSmsSeller(
-                                        phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Mart');
+                                        phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Martet');
                                     Navigator.of(context).pop();
                                   }
                                   ),
@@ -277,13 +278,27 @@ class _AdUserInfoState extends State<AdUserInfo> {
                   // transitionOnUserGestures: true,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(250),
-                    child: Image(
+                    child: widget.want.userImgUrl != '' ? Image(
                       image: NetworkImage(
-                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                          widget.want.userImgUrl),
                       width: 240,
                       height: 240,
                       fit: BoxFit.cover,
+                    ) : Icon(
+                      Icons.person,
+                      color: kPrimaryColor,
+                      size: 240,
                     ),
+                    // BlurHash(
+                    //         color: Colors.blueGrey[100],
+                    //         hash: '',
+                    //         image: 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                    //         imageFit: BoxFit.cover,
+                    //         duration: Duration(seconds: 5),
+                    //         curve: Curves.easeOut,
+                    //       ),
+                    
+                    
                   ),
                 ),
               ),

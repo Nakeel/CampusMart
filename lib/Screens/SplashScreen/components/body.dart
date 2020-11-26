@@ -16,55 +16,61 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   bool showLoadingBar = false;
   final AuthService _authService = AuthService();
+var hasBeenCalled =  false;
+
 
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () => setLoading(true));
+       Timer(Duration(seconds: 3), () => 
+       setLoading(true)
+      // _getStartupScreen(context)
+       );
   }
 
-  void _getStartupScreen() {
+  void _getStartupScreen(BuildContext context) {
     SharedPreference()
         .getBoolValuesSF(appHasRun)
-        .then((value) => handleHasRun(value));
+        .then((value){
+          handleHasRun(value, context) ;
+        });
   }
 
-  _loginUser(String email, String password) async {
-    setState(() {
+  _loginUser(String email, String password, BuildContext context) async {
       showLoadingBar = true;
-    });
     await _authService.signInWithEmailAndPass(email, password).then((result) {
       if (result == null) {
-        setState(() {
-          showLoadingBar = false;
+        // setState(() {
+        //   showLoadingBar = false;
           Navigator.pushReplacementNamed(context, "log-in");
-        });
+        // });
       } else {
         Navigator.pushReplacementNamed(context, "home");
       }
     });
   }
 
-  Future<void> handleUserLoggin(bool hasLogin) async {
-    String destRoute;
+  Future<void> handleUserLoggin(bool hasLogin, BuildContext context) async {
+    String destRoute ;
     if (!hasLogin) {
       // SharedPreference().addBoolToSF(hasUserLogin, true);
       destRoute = "welcome";
+    Navigator.pushReplacementNamed(context, destRoute);
     } else {
       var stillLoggedIn =
           await SharedPreference().getBoolValuesSF(hasUserLogin);
       if (stillLoggedIn) {
         var email = await SharedPreference().getStringValuesSF('email');
         var password = await SharedPreference().getStringValuesSF('password');
-        _loginUser(email, password);
+        _loginUser(email, password, context);
       } else {
-        destRoute = "home";
+        destRoute = "log-in";
+    Navigator.pushReplacementNamed(context, destRoute);
       }
     }
-    Navigator.pushReplacementNamed(context, destRoute);
   }
 
-  Future<void> handleHasRun(bool hasRun) async {
+  Future<void> handleHasRun(bool hasRun, BuildContext context) async {
     var sharedpref = SharedPreference();
     if (!hasRun) {
       print(hasRun);
@@ -72,20 +78,22 @@ class _BodyState extends State<Body> {
       Navigator.pushReplacementNamed(context, "onboarding");
     } else {
       var login = await sharedpref.getBoolValuesSF(hasUserLogin);
-      handleUserLoggin(login);
+      handleUserLoggin(login, context);
     }
   }
 
   void setLoading(bool show) {
     setState(() {
-      showLoadingBar = show;
+      showLoadingBar = show;  
+      hasBeenCalled = true;
     });
-    _getStartupScreen();
     // Navigator.pushNamed(context, _getStartupScreen());
   }
-
   @override
   Widget build(BuildContext context) {
+    if(!hasBeenCalled){
+      _getStartupScreen(context);
+    };
     Size size = MediaQuery.of(context).size;
     //provide screen size
     return Background(
@@ -134,7 +142,7 @@ class _BodyState extends State<Body> {
               ),
               Padding(padding: EdgeInsets.only(top: 20.0)),
               Text(
-                "Flexible Online Store \n For Students",
+                "The biggest marketplace \n for all students",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,

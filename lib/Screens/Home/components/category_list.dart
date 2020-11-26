@@ -21,13 +21,13 @@ class CategoryList extends StatelessWidget {
           imgdir: 'assets/images/footwear.png',
         ),
         ItemCategory(
-          catName: "Gadget",
+          catName: "Gadgets",
           endColor: Colors.grey[500],
           leadingColor: Colors.grey[200],
           imgdir: 'assets/images/gadgets.png',
            press: () {
             Navigator.pushNamed(context, 'categorizeList',
-                arguments: 'Gadget');
+                arguments: 'Gadgets');
           },
         ),
         ItemCategory(
@@ -41,13 +41,13 @@ class CategoryList extends StatelessWidget {
           },
         ),
         ItemCategory(
-          catName: "Wears",
+          catName: "Clothes",
           endColor: Colors.grey[500],
           leadingColor: Colors.grey[200],
           imgdir: 'assets/images/wears.png',
           press: () {
             Navigator.pushNamed(context, 'categorizeList',
-                arguments: 'Wears');
+                arguments: 'Clothes');
           },
         ),
       ]),

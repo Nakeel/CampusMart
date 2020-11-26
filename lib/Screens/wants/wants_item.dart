@@ -56,12 +56,21 @@ class WantItems extends StatelessWidget {
                               tag: postDate,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: Image(
-                                  image: NetworkImage(userImgUrl),
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: userImgUrl != ''
+                                    ? Image(
+                                        image: NetworkImage(userImgUrl),
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : CircleAvatar(
+                                        backgroundColor: Colors.grey[300],
+                                        child: Icon(
+                                          Icons.person,
+                                          color: kPrimaryColor,
+                                          size: 40,
+                                        ),
+                                      ),
                               ),
                             )),
                         Text(

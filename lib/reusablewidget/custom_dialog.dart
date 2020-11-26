@@ -91,7 +91,7 @@ class CustomDialog extends StatelessWidget {
   showSecondaryButton() {
     if (secButtonFunc != null && secButtonTxt != null) {
       return FlatButton(
-          onPressed: () {},
+          onPressed: secButtonFunc,
           child: AutoSizeText(
             secButtonTxt,
             maxLines: 1,

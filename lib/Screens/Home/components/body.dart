@@ -31,6 +31,10 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   String username, firstname, email, fullname;
   CustomUserInfo user;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+  GoodAdNotifier goodsNotifier;
+  WantsNotifier wantsNotifier;
 
   @override
   void initState() {
@@ -55,169 +59,185 @@ class _BodyState extends State<Body> {
     });
   }
 
+  Future<Null> _refresh() async {
+    await Future.delayed(Duration(seconds: 2));
+    DatabaseService().getWants(wantsNotifier);
+    DatabaseService().getGoodAds(goodsNotifier);
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-     user = Provider.of<CustomUserInfo>(context);
-    WantsNotifier wantsNotifier = Provider.of<WantsNotifier>(context);
-    GoodAdNotifier goodsNotifier = Provider.of<GoodAdNotifier>(context);
+    user = Provider.of<CustomUserInfo>(context);
+    wantsNotifier = Provider.of<WantsNotifier>(context);
+    goodsNotifier = Provider.of<GoodAdNotifier>(context);
 
     Size size = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => FocusScope.of(context).unfocus(),
-      onPanDown: (_) => FocusScope.of(context).unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // Container(
-            //   height: 200,
-            //   child: new CarouselSlider(items: ,bo),
-            // ),
+    return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      onRefresh: () async {
+        await _refresh();
+      },
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        onPanDown: (_) => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              // Container(
+              //   height: 200,
+              //   child: new CarouselSlider(items: ,bo),
+              // ),
 
-            HeaderWithSearchBox(
-              size: size,
-              userNameStyle: Body.userNameStyle,
-              // username: user.fullname,
-              fullname: fullname,
-              username: username,
-            ),
-            TitleWithMoreBtn(
-              title: "Recommended",
-              press: () {},
-            ),
-            RecommendedItems(
-              goodsList: goodsNotifier.goodsAdList,
-            ),
-            TitleWithMoreBtn(title: "Feature Items", press: () {}),
-            FeaturedItems(
-              listWants: wantsNotifier.wantList,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 25.0, horizontal: 0.0),
-              child: CarouselSlider(
-                  aspectRatio: 16 / 7,
-                  autoPlay: true,
-                  reverse: false,
-                  initialPage: 1,
-                  viewportFraction: 1.0,
-                  enableInfiniteScroll: true,
-                  items: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: AspectRatio(
-                            aspectRatio: 16 / 5,
-                            child: Image.asset(
-                              "assets/images/ad1.png",
-                              fit: BoxFit.cover,
+              HeaderWithSearchBox(
+                size: size,
+                userNameStyle: Body.userNameStyle,
+                // username: user.fullname,
+                fullname: fullname,
+                username: username,
+              ),
+              TitleWithMoreBtn(
+                title: "New Deals",
+                press: () {
+                   Navigator.pushNamed(context, 'categorizeList',
+                arguments: 'Clothes');
+                },
+              ),
+              RecommendedItems(
+                goodsList: goodsNotifier.goodsAdList,
+              ),
+              TitleWithMoreBtn(title: "Feature Items", press: () {}),
+              FeaturedItems(
+                listWants: wantsNotifier.wantList,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25.0, horizontal: 0.0),
+                child: CarouselSlider(
+                    aspectRatio: 16 / 7,
+                    autoPlay: true,
+                    reverse: false,
+                    initialPage: 1,
+                    viewportFraction: 1.0,
+                    enableInfiniteScroll: true,
+                    items: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 0.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: AspectRatio(
+                              aspectRatio: 16 / 5,
+                              child: Image.asset(
+                                "assets/images/ad1.png",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: Image.asset(
-                              "assets/images/ad3.png",
-                              fit: BoxFit.cover,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 0.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Image.asset(
+                                "assets/images/ad3.png",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: Image.asset(
-                              "assets/images/ad2.png",
-                              fit: BoxFit.cover,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 0.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Image.asset(
+                                "assets/images/ad2.png",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ]),
-            ),
+                    ]),
+              ),
 
-            TitleWithMoreBtn(
-              title: "Category",
-              press: () {},
-            ),
-            CategoryList(),
-            TitleWithMoreBtn(title: "What's New", press: () {}),
-            Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.spaceAround,
-              children: [
-                RecommendedItemCard(
-                  tag: 'jdjhsd',
-                  image:
-                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
-                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
-                  title: "Samantha",
-                  school: "Russia",
-                  price: "440",
-                  press: () {},
-                ),
-                RecommendedItemCard(
-                  tag: 'kjdfd',
-                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
-                  image:
-                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
-                  title: "Samantha",
-                  school: "Russia",
-                  price: "440",
-                  press: () {},
-                ),
-                RecommendedItemCard(
-                  image:
-                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
-                  title: "Samantha",
-                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
-                  tag: 'jjdfjhdf',
-                  school: "Russia",
-                  price: "440",
-                  press: () {},
-                ),
-                RecommendedItemCard(
-                  image:
-                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
-                  title: "Samantha",
-                  imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
-                  tag: 'jkdjkf',
-                  school: "Russia",
-                  price: "440",
-                  press: () {},
-                ),
-              ],
-            ),
+              TitleWithMoreBtn(
+                title: "Category",
+                press: () {},
+              ),
+              CategoryList(),
+              // TitleWithMoreBtn(title: "What's New", press: () {}),
+              // Wrap(
+              //   direction: Axis.horizontal,
+              //   alignment: WrapAlignment.spaceAround,
+              //   children: [
+              //     RecommendedItemCard(
+              //       tag: 'jdjhsd',
+              //       image:
+              //           "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
+              //       imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
+              //       title: "Samantha",
+              //       school: "Russia",
+              //       price: "440",
+              //       press: () {},
+              //     ),
+              //     RecommendedItemCard(
+              //       tag: 'kjdfd',
+              //       imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
+              //       image:
+              //           "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
+              //       title: "Samantha",
+              //       school: "Russia",
+              //       price: "440",
+              //       press: () {},
+              //     ),
+              //     RecommendedItemCard(
+              //       image:
+              //           "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
+              //       title: "Samantha",
+              //       imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
+              //       tag: 'jjdfjhdf',
+              //       school: "Russia",
+              //       price: "440",
+              //       press: () {},
+              //     ),
+              //     RecommendedItemCard(
+              //       image:
+              //           "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2F%20vRjT4dV118dyuPq2933fSlqMBTR2%2FCharger0?alt=media&token=26b8e162-7361-4642-b69d-3cce6f238d2b",
+              //       title: "Samantha",
+              //       imgHash: 'L45GU#*HLSOjrKr_XhMxuenSWUR%',
+              //       tag: 'jkdjkf',
+              //       school: "Russia",
+              //       price: "440",
+              //       press: () {},
+              //     ),
+              //   ],
+              // ),
 
-            SizedBox(
-              height: kDefaultPadding,
-            )
-          ],
+              SizedBox(
+                height: kDefaultPadding,
+              )
+            ],
+          ),
         ),
       ),
     );

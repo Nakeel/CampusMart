@@ -49,7 +49,7 @@ List<Widget> allItems(List<Wants> wantsList, BuildContext context) {
 
         postDate: wantItem.datePosted,
         postText: wantItem.post,
-        userImgUrl:
+        userImgUrl: 
             'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
         userLocation: wantItem.university,
         userName: wantItem.fullname);
@@ -116,7 +116,24 @@ class FeatureItems extends StatelessWidget {
                               tag: postDate,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: Image(
+                                child: 
+                                // userImgUrl != ''
+                                //     ? Image(
+                                //         image: NetworkImage(userImgUrl),
+                                //         width: 25,
+                                //         height: 25,
+                                //         fit: BoxFit.cover,
+                                //       )
+                                //     : CircleAvatar(
+                                //         backgroundColor: Colors.grey[300],
+                                //         child: Icon(
+                                //           Icons.person,
+                                //           color: kPrimaryColor,
+                                //           size: 23,
+                                //         ),
+                                //       ),
+                                
+                                Image(
                                   image: NetworkImage(userImgUrl),
                                   width: 25,
                                   height: 25,

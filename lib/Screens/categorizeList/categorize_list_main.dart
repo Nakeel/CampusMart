@@ -1,12 +1,13 @@
-import 'package:campus_mart/Screens/Home/components/recommended_Item_card.dart';
+import 'dart:async';
+
 import 'package:campus_mart/Screens/categorizeList/components/grid_item.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/goods_ad_data.dart';
-import 'package:campus_mart/models/user_info.dart';
 import 'package:campus_mart/notifier/goods_ad_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 // import 'item_category.dart';
 
@@ -35,23 +36,24 @@ class _BodyState extends State<CategorizeList> {
     super.initState();
     selectedCatString = widget.category;
     selectedCategory = categoryList.indexOf(selectedCatString);
-
-    // _pageController.animateToPage(categoryList.indexOf(selectedCatString),
-    //     duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
+    Timer(Duration(milliseconds: 200), () {
+      _pageController.animateToPage(categoryList.indexOf(selectedCatString),
+          duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
+    });
   }
 
-  List<CategorizeItems> listItem = [
-    CategorizeItems(),
-    CategorizeItems(),
-    CategorizeItems(),
-  ];
+  List<GoodsAd> featuredItems = [];
 
   int selectedCategory = 0;
+
+  int selectedSortBy = 0;
   String selectedCatString;
+  bool liked = false;
+  bool _isLiked = false;
+  String selectedSortByString;
   GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
   Widget buildGridItem(GoodsAd goodsAdItem) {
-    bool liked = false;
     return GridItem(
       isLikedPressed: liked,
       tag: goodsAdItem.itemTitle + goodsAdItem.datePosted,
@@ -66,7 +68,7 @@ class _BodyState extends State<CategorizeList> {
         print('liked' + liked.toString());
       },
       press: () {
-        Navigator.pushNamed(context, 'item-details', arguments: goodsAdItem);
+        Navigator.pushNamed(context, 'item-info', arguments: goodsAdItem);
       },
     );
   }
@@ -110,15 +112,89 @@ class _BodyState extends State<CategorizeList> {
     );
   }
 
+  Widget buildSortBy(int index, BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedSortBy = index;
+            selectedSortByString = sortByList[index];
+          });
+        },
+        child: Container(
+          color:
+              index == selectedSortBy ? Colors.grey[100] : Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(sortByList[index],
+                    style: TextStyle(
+                        color: index == selectedSortBy
+                            ? kPrimaryColor
+                            : kPrimaryColor.withOpacity(0.4),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700)),
+                Visibility(
+                    visible: index == selectedSortBy,
+                    child: Icon(
+                      Icons.check,
+                      color: kPrimaryColor,
+                    ))
+              ],
+            ),
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     // final user = Provider.of<CustomUserInfo>(context);
-
+    var goodsList = [];
     GoodAdNotifier goodsNotifier = Provider.of<GoodAdNotifier>(context);
-    var goodsList = goodsNotifier.goodsAdList
+    print('GoodCat' + goodsList.length.toString() + selectedCatString);
+
+
+    goodsList = goodsNotifier.goodsAdList
         .where((i) => i.category == selectedCatString)
         .toList();
-    print('GoodCat' + goodsList.length.toString());
+
+    if (selectedSortByString == sortByList[1]) {
+      goodsList.sort(
+          (a, b) => int.parse(b.itemPrice).compareTo(int.parse(a.itemPrice)));
+    }
+    if (selectedSortByString == sortByList[0]) {
+      goodsList.sort(
+          (a, b) => int.parse(a.itemPrice).compareTo(int.parse(b.itemPrice)));
+    }
+
+    if (selectedSortByString == sortByList[2]) {
+      goodsList.sort(
+          (a, b) => int.parse(a.itemPrice).compareTo(int.parse(b.itemPrice)));
+    }
+    if (selectedSortByString == sortByList[3]) {
+      goodsList.sort(
+          (a, b) => int.parse(b.itemPrice).compareTo(int.parse(a.itemPrice)));
+    }
+    if (selectedSortByString == sortByList[4]) {
+      goodsList.sort(
+          (a, b) => int.parse(a.itemPrice).compareTo(int.parse(b.itemPrice)));
+    }
+    if (selectedSortByString == sortByList[5]) {
+      goodsList.sort(
+          (a, b) => int.parse(a.itemPrice).compareTo(int.parse(b.itemPrice)));
+    }
+
+    
+    var dateFormat = DateFormat('kk:mm dd-MMM-yyyy');
+    featuredItems = List.from(goodsNotifier.goodsAdList);
+
+  // _wantsList = wantsList;
+
+  // featuredItems.sort((a, b) =>
+  //     dateFormat.parse(b.datePosted).compareTo(dateFormat.parse(a.datePosted)));
+
+    print('GoodCat' + goodsList.length.toString() + selectedCatString);
 
     Size size = MediaQuery.of(context).size;
     // selectedCategory =
@@ -132,43 +208,39 @@ class _BodyState extends State<CategorizeList> {
               Container(
                 color: Colors.grey[200],
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    
-
+                    IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: kPrimaryColor,
+                        ),
+                        onPressed: () {
+                          drawerKey.currentState.openEndDrawer();
+                        }),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Center(
+                        child: Text(
+                      'Sort By',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22),
+                    )),
                   ],
                 ),
               ),
-              ListTile(
-                title: Text('Home'),
-                leading: Icon(Icons.home),
-                // onTap: navigateTo(2),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                title: Text('Buy'),
-                leading: Icon(Icons.home),
-                // onTap: navigateTo(0),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                title: Text('Sell'),
-                leading: Icon(Icons.home),
-                // onTap: navigateTo(2),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                title: Text('My Carts'),
-                leading: Icon(Icons.home),
-              ),
-              SizedBox(
-                height: 10,
-              ),
+              Column(
+                children: sortByList
+                    .asMap()
+                    .entries
+                    .map(
+                      (e) => buildSortBy(e.key, context),
+                    )
+                    .toList(),
+              )
             ],
           ),
         ),
@@ -219,8 +291,7 @@ class _BodyState extends State<CategorizeList> {
                                 .asMap()
                                 .entries
                                 .map(
-                                  (e) => buildGridItem(
-                                      goodsNotifier.goodsAdList[e.key]),
+                                  (e) => buildGridItem(goodsList[e.key]),
                                 )
                                 .toList(),
                           ))
@@ -244,9 +315,9 @@ class _BodyState extends State<CategorizeList> {
                                 Navigator.pop(context);
                               }),
                           IconButton(
-                              icon: Icon(Icons.sort, color: Colors.white),
+                              icon: Icon(Icons.sort,
+                                  color: Colors.white, size: 40),
                               onPressed: () {
-                                print('drawer Clicked');
                                 drawerKey.currentState.openEndDrawer();
                               }),
                         ]),
@@ -281,7 +352,21 @@ class _BodyState extends State<CategorizeList> {
                           layout: SwiperLayout.STACK,
                           itemBuilder: (context, index) {
                             return Stack(
-                              children: listItem,
+                              children: featuredItems
+                                        .asMap()
+                                        .entries
+                                        .map(
+                                          (e) => CategorizeItems(good: featuredItems[e.key],isLiked: _isLiked, isLikedPressed: (){
+                                            setState(() {
+                                              _isLiked = !_isLiked;
+                                            });
+                                          },
+                                          itemClicked: (){
+                                            Navigator.pushNamed(context, 'item-info', arguments: featuredItems[e.key]);
+                                          },
+                                          ),
+                                        ).take(3)
+                                        .toList(),
                             );
                           },
                         ),
@@ -307,9 +392,12 @@ class _BodyState extends State<CategorizeList> {
 }
 
 class CategorizeItems extends StatelessWidget {
-  const CategorizeItems({
-    Key key,
-  }) : super(key: key);
+  const CategorizeItems({Key key, this.good, this.isLiked, this.isLikedPressed, this.itemClicked})
+      : super(key: key);
+
+  final GoodsAd good;
+  final bool isLiked;
+  final Function isLikedPressed, itemClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -344,12 +432,16 @@ class CategorizeItems extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10.0)),
-                child: Image(
-                  image: NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/campus-market-f0309.appspot.com/o/goods%2FvRjT4dV118d2933fSlqMBTR2%2FStanding%20fan0?alt=media&token=9c2e9096-90fc-4499-abdf-2ece0ea7470f"),
-                  width: 170,
-                  height: 220,
-                  fit: BoxFit.cover,
+                child: InkWell(
+                  onTap: itemClicked,
+                  child: Image(
+                    image: NetworkImage(
+                      good.itemImgList[0],
+                    ),
+                    width: 170,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -361,7 +453,7 @@ class CategorizeItems extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Name of item',
+                      good.itemTitle,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.black,
@@ -369,7 +461,7 @@ class CategorizeItems extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Location of item',
+                      good.university,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.black,
@@ -381,7 +473,7 @@ class CategorizeItems extends StatelessWidget {
                     // ),
                     Container(
                       child: Text(
-                        'Few Desc of item file Desc of item file Location of item data Location of item',
+                        good.itemDesc,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
@@ -401,7 +493,7 @@ class CategorizeItems extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '2500.0',
+                                good.itemPrice,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -410,11 +502,13 @@ class CategorizeItems extends StatelessWidget {
                               ),
                               IconButton(
                                   icon: Icon(
-                                    Icons.favorite_outline,
+                                    isLiked
+                                        ? Icons.favorite_outline
+                                        : Icons.favorite,
                                     color: kPrimaryColor,
                                   ),
                                   splashColor: kPrimaryColor,
-                                  onPressed: () {})
+                                  onPressed: isLikedPressed)
                             ]),
                       ),
                     )

@@ -8,7 +8,8 @@ class HeaderWithSearchBox extends StatelessWidget {
     Key key,
     @required this.size,
     @required this.userNameStyle,
-    this.username, this.fullname,
+    this.username,
+    this.fullname,
   }) : super(key: key);
 
   final Size size;
@@ -68,43 +69,61 @@ class HeaderWithSearchBox extends StatelessWidget {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                height: 54,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, 10),
-                      blurRadius: 50,
-                      color: kPrimaryColor.withOpacity(0.23),
-                    )
-                  ],
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          hintText: "Search",
-                          hintStyle: TextStyle(
-                            color: kPrimaryColor.withOpacity(0.5),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, 'search');
+                },
+                child: Hero(
+                  tag: 'search',
+                  transitionOnUserGestures: true,
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 10),
+                          blurRadius: 50,
+                          color: kPrimaryColor.withOpacity(0.23),
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            width: size.width * 0.6,
+                            child: Text(
+                              'Search',
+                              style: TextStyle(
+                                  color: kPrimaryColor.withOpacity(0.5),
+                                  fontSize: 16),
+                            ),
                           ),
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          // suffixIcon: SvgPicture.asset("assets/images/search.svg"),
+                          // child: TextField(
+                          //   onChanged: (value) {},
+                          //   decoration: InputDecoration(
+                          //     hintText: "Search",
+                          //     hintStyle: TextStyle(
+                          //       color: kPrimaryColor.withOpacity(0.5),
+                          //     ),
+                          //     enabledBorder: InputBorder.none,
+                          //     focusedBorder: InputBorder.none,
+                          //     // suffixIcon: SvgPicture.asset("assets/images/search.svg"),
+                          //   ),
+                          // ),
                         ),
-                      ),
+                        SvgPicture.asset(
+                          "assets/icons/search.svg",
+                          color: kPrimaryColor,
+                        ),
+                      ],
                     ),
-                    SvgPicture.asset(
-                      "assets/icons/search.svg",
-                      color: kPrimaryColor,
-                    ),
-                  ],
+                  ),
                 ),
               )),
         ],

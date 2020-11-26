@@ -70,7 +70,6 @@ class RecommendedItemCard extends StatelessWidget {
                         color: kPrimaryColor.withOpacity(0.23),
                       )
                     ]),
-                child: Flexible(
                   child: Row(
                     children: <Widget>[
                       Flexible(
@@ -109,7 +108,7 @@ class RecommendedItemCard extends StatelessWidget {
                       )
                     ],
                   ),
-                ),
+              
               ),
             ],
           ),

@@ -27,6 +27,38 @@ const List<String> categoryList = <String>[
   'Accessories',
 ];
 
+const List<String> sortByList = <String>[
+  'Newest First',
+  'Most Purchased Product',
+  'Most Viewed',
+  'Price(High to Low)',
+  'Product Proximity',
+  'Current Location',
+];
+
+const List<String> sortByTypeList = <String>[
+  'Selling Goods',
+  'Wants'
+];
+
+const List<String> dashBoardCatList = <String>[
+  'Wants',
+  'Favourite',
+  'Home',
+  'Post Ad',
+  'Profile',
+  'Log Out',
+];
+
+const List<IconData> dashBoardCatIconList = <IconData>[
+  Icons.add_to_photos,
+      Icons.favorite,
+  Icons.home,
+  Icons.add,
+  Icons.person,
+  Icons.logout,
+];
+
 const List<String> categoryImgAsset = [
   'assets/images/clothes2.jpg',
   'assets/images/home_app.png',

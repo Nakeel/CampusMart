@@ -1,10 +1,9 @@
-import 'package:campus_mart/Screens/ItemDetails/components/color_and_size.dart';
 import 'package:campus_mart/Screens/ItemDetails/components/description_text.dart';
-import 'package:campus_mart/Screens/ItemDetails/components/icon_card.dart';
 import 'package:campus_mart/Screens/ItemDetails/components/seller_info.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/goods_ad_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'item_img_widget.dart';
@@ -203,9 +202,10 @@ class ItemImage extends StatelessWidget {
   const ItemImage({
     Key key,
     this.imageUrl,
-    this.tag,
+    this.tag, this.imageHash,
   }) : super(key: key);
   final String imageUrl;
+  final String imageHash;
   final String tag;
 
   @override
@@ -217,10 +217,15 @@ class ItemImage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: ClipRRect(
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
-          child: Image(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.fill,
-          ),
+          child: BlurHash(
+                            color: Colors.blueGrey[100],
+                            hash: imageHash,
+                            image: imageUrl,
+                            imageFit: BoxFit.cover,
+                            duration: Duration(seconds: 5),
+                            curve: Curves.easeOut,
+                          ),
+          
         ),
       ),
     );

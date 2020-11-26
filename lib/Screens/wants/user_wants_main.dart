@@ -63,25 +63,6 @@ class _UserWantsMainState extends State<UserWantsMain> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: allItems(wantsNotifier.wantList),
-                //   // children: wantsNotifier.wantList.asMap().entries.map((e) {
-                //   //   // Container(
-                //   //   //   width: size.width,
-                //   //   //   child: Text("New"),
-                //   //   // );
-                //   //   // print('WantsP ' + e.value.category);
-                //   //   WantItems(
-                //   //       press: () {
-                //   //         print('Working');
-                //   //         // Navigator.pushNamed(context, 'adUserInfo',
-                //   //         //     arguments: e.value);
-                //   //       },
-                //   //       postBgColor: kPrimaryColor,
-                //   //       postDate: e.value.datePosted,
-                //   //       postText: e.value.post,
-                //   //       userImgUrl:'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                //   //       userLocation: e.value.university,
-                //   //       userName: e.value.fullname);
-                //   // }).toList(),
               ),
             )),
             Positioned(
@@ -102,13 +83,6 @@ class _UserWantsMainState extends State<UserWantsMain> {
           ],
         ),
       ),
-
-      // SingleChildScrollView(
-      //   child: Column(
-      //     children: [
-      //     ],
-      //   ),
-      // ),
     );
   }
 
@@ -134,7 +108,7 @@ class _UserWantsMainState extends State<UserWantsMain> {
           postDate: wantItem.datePosted,
           postText: wantItem.post,
           userImgUrl:
-              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+              wantItem.userImgUrl,
           userLocation: wantItem.university,
           userName: wantItem.fullname);
       all.add(want);

@@ -1,5 +1,4 @@
 import 'package:campus_mart/models/goods_ad_data.dart';
-import 'package:campus_mart/models/user.dart';
 import 'package:campus_mart/models/user_info.dart';
 import 'package:campus_mart/models/wants_data.dart';
 import 'package:campus_mart/notifier/goods_ad_notifier.dart';
@@ -26,6 +25,8 @@ class DatabaseService {
       'fullname': fullname,
       'email': email,
       'phone': phone,
+      'profileImgUrl': '',
+      'profileImgHash': '',
       'university': university,
       'totalSalesAd': 0,
       'uuid': uid,
@@ -52,6 +53,9 @@ class DatabaseService {
       String colorId,
       String datePosted,
       String post,
+      String userImgUrl,
+      String userImgHash,
+      String phone,
       String category,
       bool isBought,
       bool isPromoted) async {
@@ -62,7 +66,10 @@ class DatabaseService {
         'university': university,
         'post': post,
         'colorId': colorId,
+        'phone': phone,
         'datePosted': datePosted,
+        'userImgUrl': userImgUrl,
+        'userImgHash': userImgHash,
         'category': category,
         'isBought': isBought,
         'isPromoted': isPromoted
@@ -119,6 +126,23 @@ class DatabaseService {
     });
   }
 
+  Future updateProfileImg(
+    String profileImgUrl,
+    // String profileImgHash,
+    String uuid,
+  ) async {
+    await userCollection.doc(uuid).update({
+      'profileImgUrl': profileImgUrl,
+      // 'profileImgHash': profileImgHash
+    }).then((value) {
+      print('firebase success');
+      return value;
+    }).catchError((onError) {
+      print('firebase failed' + onError.toString());
+      return 'Failed';
+    });
+  }
+
   //user stream
   Stream<QuerySnapshot> get users {
     return userCollection.snapshots();
@@ -167,6 +191,10 @@ class DatabaseService {
 
   //user stream
   Stream<CustomUserInfo> userData(String uid) {
-    return userCollection.doc(uid).snapshots().map(_userDataFromSnapShot);
+    if (uid != null) {
+      return userCollection.doc(uid).snapshots().map(_userDataFromSnapShot);
+    }else{
+      return null;
+    }
   }
 }
