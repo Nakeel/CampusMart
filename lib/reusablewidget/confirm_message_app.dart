@@ -5,14 +5,12 @@ import 'package:campus_mart/constants.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmMessageAppDialog extends StatefulWidget {
-  final String title, description, primaryButtonText, secButtonTxt;
+  final String  primaryButtonText, secButtonTxt;
 
   final Function primaryButtonFunc, secButtonFunc;
 
   const ConfirmMessageAppDialog(
       {Key key,
-      @required this.title,
-      @required this.description,
       @required this.primaryButtonText,
       this.secButtonTxt,
       @required this.primaryButtonFunc,
@@ -62,7 +60,6 @@ class _ConfirmMessageAppDialogState extends State<ConfirmMessageAppDialog>
 
   @override
   Widget build(BuildContext context) {
-    print('Dialog' + widget.description);
     return
         // ScaleTransition(
         //   scale: scaleAnimation,

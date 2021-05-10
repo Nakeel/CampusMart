@@ -57,6 +57,7 @@ dependencies:
   path: ^1.7.0
   animated_icon_button: ^0.3.0
   flutter_launcher_icons: ^0.8.0
+  timeago: ^3.0.2
 
 
 dependency_overrides:

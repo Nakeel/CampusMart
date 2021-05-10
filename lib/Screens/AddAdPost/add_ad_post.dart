@@ -80,7 +80,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
 
   Padding buildConditionType(int index, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
       child:
           GestureDetector(
             onTap: () {
@@ -865,6 +865,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                                 ),
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
+                                    isExpanded: true,
                                     hint: Text(
                                       "Choose nearest Institution",
                                       style: TextStyle(
@@ -874,9 +875,9 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                                     ),
                                     value: selectedUniversity,
                                     iconEnabledColor: kPrimaryColor,
-                                    onChanged: (String Value) {
+                                    onChanged: (String selectedInstitution) {
                                       setState(() {
-                                        selectedUniversity = Value;
+                                        selectedUniversity = selectedInstitution;
                                       });
                                     },
                                     items: institutionList.map((String user) {

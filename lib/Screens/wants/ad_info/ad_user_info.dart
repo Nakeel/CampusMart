@@ -209,10 +209,7 @@ class _AdUserInfoState extends State<AdUserInfo> {
                             showDialog(
                               context: context,
                               builder: (context) => ConfirmMessageAppDialog(
-                                  title: 'Post Successfully added',
-                                  description:
-                                      'You successfully added a new sales ad will run for a period of 15days if sold before then please notify',
-                                  primaryButtonText: 'Close',
+                                   primaryButtonText: 'Close',
                                   primaryButtonFunc: () {
                                     launchWhatsApp(
                                         phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Martet');

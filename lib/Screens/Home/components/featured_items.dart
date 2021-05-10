@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:campus_mart/Screens/wants/wants_item.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/wants_data.dart';
+import 'package:campus_mart/utils/want_user_info_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -41,7 +42,13 @@ List<Widget> allItems(List<Wants> wantsList, BuildContext context) {
     print("ColorId " + wantItem.datePosted);
     Widget want = FeatureItems(
         press: () {
-          Navigator.pushNamed(context, 'adUserInfo', arguments: wantItem);
+          // Navigator.pushNamed(context, 'adUserInfo', arguments: wantItem);
+          showDialog(
+              context: context,
+              builder: (context) => WantUserInfoDialogWidget(
+                wantItem: wantItem,
+              )
+          );
         },
         postBgColor: Color(int.parse(wantItem.colorId)),
 

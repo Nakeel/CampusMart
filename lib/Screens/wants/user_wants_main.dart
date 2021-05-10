@@ -5,6 +5,7 @@ import 'package:campus_mart/models/user_info.dart';
 import 'package:campus_mart/models/wants_data.dart';
 import 'package:campus_mart/notifier/wants_notifier.dart';
 import 'package:campus_mart/services/database.dart';
+import 'package:campus_mart/utils/want_user_info_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -99,7 +100,13 @@ class _UserWantsMainState extends State<UserWantsMain> {
       // print("ColorId "+ wantItem.colorId);
       Widget want = WantItems(
           press: () {
-            Navigator.pushNamed(context, 'adUserInfo', arguments: wantItem);
+            // Navigator.pushNamed(context, 'adUserInfo', arguments: wantItem);
+            showDialog(
+                context: context,
+                builder: (context) => WantUserInfoDialogWidget(
+                  wantItem: wantItem,
+                )
+            );
           },
           postBgColor: Color(int.parse(wantItem.colorId)),
 

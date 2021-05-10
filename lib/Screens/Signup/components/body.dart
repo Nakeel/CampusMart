@@ -275,6 +275,7 @@ class _BodyState extends State<Body> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
+                        isExpanded: true,
                         hint: Text(
                           "Select Institution",
                           style: TextStyle(
