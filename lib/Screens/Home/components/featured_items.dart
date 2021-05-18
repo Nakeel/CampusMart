@@ -35,7 +35,7 @@ List<Widget> allItems(List<Wants> wantsList, BuildContext context) {
 
   _wantsList.sort((a, b) =>
       dateFormat.parse(b.datePosted).compareTo(dateFormat.parse(a.datePosted)));
-  
+
   // _wantsList.take(3);
 
   _wantsList.take(4).forEach((wantItem) {
@@ -46,9 +46,8 @@ List<Widget> allItems(List<Wants> wantsList, BuildContext context) {
           showDialog(
               context: context,
               builder: (context) => WantUserInfoDialogWidget(
-                wantItem: wantItem,
-              )
-          );
+                    wantItem: wantItem,
+                  ));
         },
         postBgColor: Color(int.parse(wantItem.colorId)),
 
@@ -56,8 +55,9 @@ List<Widget> allItems(List<Wants> wantsList, BuildContext context) {
 
         postDate: wantItem.datePosted,
         postText: wantItem.post,
-        userImgUrl: wantItem.userImgUrl == null ?
-            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg' : wantItem.userImgUrl ,
+        userImgUrl: wantItem.userImgUrl == null
+            ? 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
+            : wantItem.userImgUrl,
         userLocation: wantItem.university,
         userName: wantItem.fullname);
     // Widget want = FeatureItemCard(
@@ -123,24 +123,24 @@ class FeatureItems extends StatelessWidget {
                               tag: postDate,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: 
-                                // userImgUrl != ''
-                                //     ? Image(
-                                //         image: NetworkImage(userImgUrl),
-                                //         width: 25,
-                                //         height: 25,
-                                //         fit: BoxFit.cover,
-                                //       )
-                                //     : CircleAvatar(
-                                //         backgroundColor: Colors.grey[300],
-                                //         child: Icon(
-                                //           Icons.person,
-                                //           color: kPrimaryColor,
-                                //           size: 23,
-                                //         ),
-                                //       ),
-                                
-                                Image(
+                                child:
+                                    // userImgUrl != ''
+                                    //     ? Image(
+                                    //         image: NetworkImage(userImgUrl),
+                                    //         width: 25,
+                                    //         height: 25,
+                                    //         fit: BoxFit.cover,
+                                    //       )
+                                    //     : CircleAvatar(
+                                    //         backgroundColor: Colors.grey[300],
+                                    //         child: Icon(
+                                    //           Icons.person,
+                                    //           color: kPrimaryColor,
+                                    //           size: 23,
+                                    //         ),
+                                    //       ),
+
+                                    Image(
                                   image: NetworkImage(userImgUrl),
                                   width: 25,
                                   height: 25,

@@ -5,20 +5,18 @@ const kPrimaryLightColor = Color(0xFFD4EFDF);
 
 const double kDefaultPadding = 20.0;
 
-
-
 const String appHasRun = "Has Run";
 const String hasUserLogin = "Has Login";
-
 
 const String USERNAME = "username";
 const String FULLNAME = "fullname";
 const String EMAIL = "email";
+const String UIID = "uiid";
 const String PROFILE_IMG = "profile_img";
 
-const  primaryColorString = 0xFF6F35A5;
-const  primaryLightColorString = 0xFF306948;
-const  secColorString = 0xFF228B22;
+const primaryColorString = 0xFF6F35A5;
+const primaryLightColorString = 0xFF306948;
+const secColorString = 0xFF228B22;
 
 const List<String> universityList = <String>[
   'University of Ibadan',
@@ -46,7 +44,6 @@ const List<IconData> iconList = [
   Icons.accessible,
 ];
 
-
 const List<String> conditionList = <String>[
   'Brand New',
   'Nigeria Used',
@@ -62,10 +59,7 @@ const List<String> sortByList = <String>[
   'Current Location',
 ];
 
-const List<String> sortByTypeList = <String>[
-  'Products',
-  'Request'
-];
+const List<String> sortByTypeList = <String>['Products', 'Request'];
 
 const List<String> dashBoardCatList = <String>[
   'Requests',

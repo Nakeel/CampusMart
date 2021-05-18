@@ -232,8 +232,6 @@ class _BodyState extends State<Body> {
         } else {
           Navigator.pushReplacementNamed(context, "home");
         }
-
-
       });
     }
   }
@@ -254,7 +252,7 @@ class _BodyState extends State<Body> {
             child: Column(
               children: [
                 Text(
-                  'Register On \nCampus Mart',
+                  'Register On \nCampus Market',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),

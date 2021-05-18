@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:multi_image_picker/multi_image_picker.dart';
 
@@ -42,14 +43,14 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
   List<String> _featureList = List<String>();
   List<String> _imageList = List<String>();
   String ProductTitle, ProductDesc, ProductPrice;
-  String selectedCategory , selectedCondition = '';
+  String selectedCategory, selectedCondition = '';
   int selectedConditionIndex = 0;
   bool isNegotiable = false;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 1), ()=>  isShowDialogAgain());
+      Future.delayed(Duration(seconds: 1), () => isShowDialogAgain());
       // getUserData();
     });
     super.initState();
@@ -75,44 +76,40 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
 
   String selectedUniversity;
 
-
-
-
   Padding buildConditionType(int index, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
-      child:
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedConditionIndex = index;
-                selectedCondition = conditionList[index];
-              });
-            },
-            child: Container(
-
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-              decoration: BoxDecoration(
-                color: index == selectedConditionIndex ? kPrimaryColor: Colors.white ,
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                border: Border.all(
-                  color: index == selectedConditionIndex
-                      ? Colors.white
-                      : kPrimaryColor.withOpacity(0.4),
-                  width: 1, ),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedConditionIndex = index;
+            selectedCondition = conditionList[index];
+          });
+        },
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: index == selectedConditionIndex
+                  ? kPrimaryColor
+                  : Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              border: Border.all(
+                color: index == selectedConditionIndex
+                    ? Colors.white
+                    : kPrimaryColor.withOpacity(0.4),
+                width: 1,
               ),
-              child:Center(
-                child:  Text(conditionList[index],
-                    style: TextStyle(
-                        color: index == selectedConditionIndex
-                            ? Colors.white
-                            : kPrimaryColor.withOpacity(0.4),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700)),
-              )
-
-            ) ,
-          ),
+            ),
+            child: Center(
+              child: Text(conditionList[index],
+                  style: TextStyle(
+                      color: index == selectedConditionIndex
+                          ? Colors.white
+                          : kPrimaryColor.withOpacity(0.4),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700)),
+            )),
+      ),
     );
   }
 
@@ -165,43 +162,40 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
     final pickedFile =
         await picker.getImage(source: ImageSource.camera, imageQuality: 45);
 
-
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        setState(() {
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      setState(() {
         images.add(_image);
-        _isLoading = true;
-        });
-        getImageHash(_image).then((value) {
-          setState(() {
-            _isLoading = false;
-          });
-          imgHashList.add(value);
-        });
-      } else {
-        print('No image selected.');
-      }
+        // _isLoading = true;
+      });
+
+      imgHashList.add('L4Cj9J\$x00Wa0Mt7IUX800R:~pjW');
+    } else {
+      print('No image selected.');
+    }
   }
 
   _imgFromGallery() async {
     final pickedFile =
         await picker.getImage(source: ImageSource.gallery, imageQuality: 35);
 
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        setState(() {
-          images.add(_image);
-          _isLoading = true;
-        });
-        getImageHash(_image).then((value) {
-          setState(() {
-            _isLoading = false;
-          });
-          imgHashList.add(value);
-        });
-      } else {
-        print('No image selected.');
-      }
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      setState(() {
+        images.add(_image);
+        // _isLoading = true;
+      });
+      // getImageHash(_image).then((value) {
+      //   setState(() {
+      //     _isLoading = false;
+      //   });
+      //   imgHashList.add(value);
+      // });
+
+      imgHashList.add('L4Cj9J\$x00Wa0Mt7IUX800R:~pjW');
+    } else {
+      print('No image selected.');
+    }
     // loadAssets();
   }
 
@@ -234,8 +228,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
   }
 
   uploadMutliImg(List<File> imgListFile, CustomUserInfo user) async {
-    
-    if (imgListFile.length>=4) {
+    if (imgListFile.length >= 4) {
       setState(() {
         _isLoading = true;
       });
@@ -251,22 +244,22 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
           if (images.length == uploadUrlList.length) {
             DatabaseService()
                 .postGoodsData(
-                user.fullname,
-                user.uuid,
-                user.university,
-                ProductTitle,
-                currentDate,
-                ProductDesc,
-                selectedCategory,
-                priceOfProduct.toString(),
-                user.phone,
-                selectedCondition,
-                isNegotiable,
-                uploadUrlList,
-                imgHashList,
-                _featureList,
-                false,
-                false)
+                    user.fullname,
+                    user.uuid,
+                    user.university,
+                    ProductTitle,
+                    currentDate,
+                    ProductDesc,
+                    selectedCategory,
+                    priceOfProduct.toString(),
+                    user.phone,
+                    selectedCondition,
+                    isNegotiable,
+                    uploadUrlList,
+                    imgHashList,
+                    _featureList,
+                    false,
+                    false)
                 .then((result) {
               if (result == 'Failed') {
                 setState(() {
@@ -290,18 +283,16 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                   });
                   showDialog(
                     context: context,
-                    builder: (context) =>
-                        CustomDialog(
-                            title: 'Post Successfully added',
-                            description:
-                            'You successfully added a new sales ad will run for a period of 15days if sold before then please notify',
-                            primaryButtonText: 'Close',
-                            primaryButtonFunc: () {
-                              print(
-                                  'ClearText ' + _selectedIconIndex.toString());
-                              clearText();
-                              Navigator.of(context).pop();
-                            }),
+                    builder: (context) => CustomDialog(
+                        title: 'Post Successfully added',
+                        description:
+                            'You\'ve successfully posted a new product. Cheers.',
+                        primaryButtonText: 'Close',
+                        primaryButtonFunc: () {
+                          print('ClearText ' + _selectedIconIndex.toString());
+                          clearText();
+                          Navigator.of(context).pop();
+                        }),
                   );
                 });
               }
@@ -310,7 +301,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
         });
         imgIndex++;
       });
-    }else{
+    } else {
       scaffoldKey.currentState.showSnackBar(
         SnackBar(
           backgroundColor: Colors.redAccent,
@@ -434,7 +425,6 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
     // }
   }
 
-
   isShowDialogAgain() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.getBool(RouteConstant.ADD_PRODUCT) ?? true
@@ -448,8 +438,8 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
         builder: (context) => InfoDialogWidget(
             title: 'Add New Products',
             description:
-            'Create new product advert for potential buyers around you to purchase and earn on the go',
-            primaryButtonText: 'Learn More',
+                'Create new product advert for potential buyers around you to purchase and earn on the go',
+            primaryButtonText: 'Close',
             infoType: RouteConstant.ADD_PRODUCT,
             infoIcon: 'assets/icons/onlineadvertising.png',
             primaryButtonFunc: () {
@@ -460,9 +450,38 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
   Future<String> getImageHash(File image) async {
     Uint8List byte = await image.readAsBytes();
 
-   var blurHash = await BlurHash.encode(byte, 4, 3);
-   print('ImageHash' + blurHash);
+    var blurHash = await BlurHash.encode(byte, 4, 3);
+    print('ImageHash' + blurHash);
     return blurHash;
+  }
+
+  Widget getSearchableDropdown(List<String> listData) {
+    List<DropdownMenuItem> items = [];
+    for (int i = 0; i < listData.length; i++) {
+      items.add(new DropdownMenuItem(
+        child: new Text(
+          listData[i],
+        ),
+        value: listData[i],
+      ));
+    }
+    return SearchableDropdown(
+      items: items,
+      isExpanded: true,
+      underline: SizedBox(),
+      value: selectedUniversity,
+      isCaseSensitiveSearch: false,
+      hint: new Text('Select Institution'),
+      searchHint: new Text(
+        'Search Institution',
+        style: new TextStyle(fontSize: 20),
+      ),
+      onChanged: (value) {
+        setState(() {
+          selectedUniversity = value;
+        });
+      },
+    );
   }
 
   @override
@@ -472,659 +491,308 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
     Size size = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
     return LoadingOverlay(
-      isLoading: _isLoading,
-      progressIndicator: LoaderUtil(),
-      child: Scaffold(
-        key: scaffoldKey,
-        body: Form(
-          key: _formKey,
-          child: Container(
-            height: size.height,
-            width: size.width,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 10, 10, 70),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 5.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.adjust,
-                                    color: Colors.grey[300],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Choose Category',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                width: size.width,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: iconList
-                                        .asMap()
-                                        .entries
-                                        .map(
-                                          (e) => _buildIcon(e.key),
-                                    )
-                                        .toList(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 0.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.text_format,
-                                    color: Colors.grey[350],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Product Title',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                // height: size.height * 0.2,
-                                width: size.width * 0.85,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(3.0, 3.0),
-                                      blurRadius: 10.0,
-                                      spreadRadius: 2.0,
-                                      color: kPrimaryColor.withOpacity(0.3),
-                                    )
-                                  ],
-                                ),
-                                child:
-                                // Center(
-                                //     child:
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 0),
-                                  child: TextFormField(
-                                    onChanged: (value) {
-                                      setState(() {
-                                        ProductTitle = value;
-                                      });
-                                    },
-                                    controller: _productTitleController,
-                                    textAlign: TextAlign.justify,
-                                    decoration: new InputDecoration(
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      hintText: 'Enter title of the Product',
-                                      hintStyle:
-                                      TextStyle(color: Colors.grey[400]),
-                                      disabledBorder: InputBorder.none,
-                                      // counter: Offstage()
-                                    ),
-                                    style: TextStyle(
-                                        fontSize: 22, color: Colors.black),
-                                  ),
-                                ),
-                                // ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 0.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.monetization_on_outlined,
-                                    color: Colors.grey[350],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Product Price',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                // height: size.height * 0.2,
-                                width: size.width * 0.85,
-                                padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(-2.5, 3.0),
-                                      blurRadius: 1.5,
-                                      spreadRadius: 1.5,
-                                      color: kPrimaryColor.withOpacity(0.3),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+        isLoading: _isLoading,
+        progressIndicator: LoaderUtil(),
+        child: Scaffold(
+          key: scaffoldKey,
+          body: Form(
+            key: _formKey,
+            child: Container(
+              height: size.height,
+              width: size.width,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(15, 10, 10, 70),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 5.0),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
-                                    Expanded(
-                                      flex: 7,
-                                      child:
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 0),
-                                        child: PriceCounter(
-                                          decreasePrice: () {
-                                            if (priceOfProduct > 100) {
-                                              setState(() {
-                                                priceOfProduct -= 100;
-                                              });
-                                            }
-                                          },
-                                          changeAmount: (){
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => CustomAlert(
-                                                child: CustomAlertDialogWidget(
-                                                  alertTitle: 'Product Price',
-                                                  alertDesc: 'Enter desired price for your product',
-                                                  positiveBtnFunc: (){
-                                                    setState(() {
-                                                    });
-                                                    Navigator.pop(context);
-                                                  },
-                                                  positiveBtnText: 'Confirm Price',
-                                                  textController: _productAmountController,
-                                                  onTextChange: (amount){
-                                                    priceOfProduct = int.parse(amount);
-                                                  },
-                                                  enteredText: priceOfProduct.toString(),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          increasePrice: () {
-                                            setState(() {
-                                              priceOfProduct += 100;
-                                            });
-                                          },
-                                          productPrice: priceOfProduct,
-                                        ),
+                                    Icon(
+                                      Icons.adjust,
+                                      color: Colors.grey[300],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Choose Category',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ),
-                                    Expanded(
-                                        flex: 3,
-                                        child: Container(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Negotiable',
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: Colors.grey[600]),
-                                              ),
-                                              // SizedBox(
-                                              //   height: 5,
-                                              // ),
-                                              Switch(
-                                                value: isNegotiable,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    isNegotiable = value;
-                                                    print(isNegotiable);
-                                                  });
-                                                },
-                                                activeTrackColor:
-                                                kPrimaryColor.withOpacity(0.5),
-                                                activeColor: kPrimaryColor,
-                                              ),
-                                            ],
-                                          ),
-
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 0.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.text_format,
-                                    color: Colors.grey[350],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Product Description',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                height: size.height * 0.2,
-                                width: size.width * 0.85,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                  // shape: BoxShape.circle,
-
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(3.0, 3.0),
-                                      blurRadius: 10.0,
-                                      spreadRadius: 2.0,
-                                      color: kPrimaryColor.withOpacity(0.3),
                                     )
                                   ],
                                 ),
-                                child:
-                                // Center(
-                                //     child:
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 0),
-                                  child: TextFormField(
-                                    textAlign: TextAlign.justify,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        ProductDesc = value;
-                                      });
-                                    },
-                                    maxLines: 4,
-                                    maxLength: 100,
-                                    controller: _productDescController,
-                                    decoration: new InputDecoration(
+                                Container(
+                                  width: size.width,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: iconList
+                                          .asMap()
+                                          .entries
+                                          .map(
+                                            (e) => _buildIcon(e.key),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 0.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.text_format,
+                                      color: Colors.grey[350],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Product Title',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  // height: size.height * 0.2,
+                                  width: size.width * 0.85,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(3.0, 3.0),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 2.0,
+                                        color: kPrimaryColor.withOpacity(0.3),
+                                      )
+                                    ],
+                                  ),
+                                  child:
+                                      // Center(
+                                      //     child:
+                                      Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 0),
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        setState(() {
+                                          ProductTitle = value;
+                                        });
+                                      },
+                                      controller: _productTitleController,
+                                      textAlign: TextAlign.justify,
+                                      decoration: new InputDecoration(
                                         border: InputBorder.none,
                                         focusedBorder: InputBorder.none,
                                         enabledBorder: InputBorder.none,
                                         errorBorder: InputBorder.none,
-                                        hintText: 'Enter description of the Product',
+                                        hintText: 'Enter title of the Product',
                                         hintStyle:
-                                        TextStyle(color: Colors.grey[400]),
+                                            TextStyle(color: Colors.grey[400]),
                                         disabledBorder: InputBorder.none,
-                                        counter: Offstage()),
-                                    style: TextStyle(
-                                        fontSize: 22, color: Colors.black),
-                                  ),
-                                ),
-                                // ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 0.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.school_outlined,
-                                    color: Colors.grey[350],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Select Institution',
+                                        // counter: Offstage()
+                                      ),
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
+                                          fontSize: 22, color: Colors.black),
                                     ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                width: size.width * 0.8,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
                                   ),
-                                  // shape: BoxShape.circle,
-
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(3.0, 3.0),
-                                      blurRadius: 10.0,
-                                      spreadRadius: 2.0,
-                                      color: kPrimaryColor.withOpacity(0.3),
-                                    )
-                                  ],
+                                  // ),
                                 ),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    isExpanded: true,
-                                    hint: Text(
-                                      "Choose nearest Institution",
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    value: selectedUniversity,
-                                    iconEnabledColor: kPrimaryColor,
-                                    onChanged: (String selectedInstitution) {
-                                      setState(() {
-                                        selectedUniversity = selectedInstitution;
-                                      });
-                                    },
-                                    items: institutionList.map((String user) {
-                                      return DropdownMenuItem<String>(
-                                          value: user,
-                                          child: Text(
-                                            user,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500),
-                                          ));
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 0.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.photo_album,
-                                    color: Colors.grey[350],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Add Product Photos',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    padding: EdgeInsets.only(left: 15),
-                                    margin: EdgeInsets.symmetric(vertical: 10),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: 80,
-                                          width: 80,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                            // shape: BoxShape.circle,
-
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: const Offset(3.0, 3.0),
-                                                blurRadius: 10.0,
-                                                spreadRadius: 2.0,
-                                                color: kPrimaryColor
-                                                    .withOpacity(0.3),
-                                              )
-                                            ],
-                                          ),
-                                          child: InkWell(
-                                            onTap: () {
-                                              _showPicker(context);
-                                            },
-                                            splashColor:
-                                            kPrimaryColor.withOpacity(0.4),
-                                            child: Icon(
-                                              Icons.photo_camera,
-                                              color: kPrimaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Row(
-                                          children: List.generate(images.length,
-                                                  (index) {
-                                                return Stack(
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.all(5),
-                                                      margin: EdgeInsets.all(8),
-                                                      height: 100,
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                        BorderRadius.all(
-                                                          Radius.circular(10),
-                                                        ),
-                                                        // shape: BoxShape.circle,
-
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            offset: const Offset(
-                                                                3.0, 3.0),
-                                                            blurRadius: 10.0,
-                                                            spreadRadius: 2.0,
-                                                            color: kPrimaryColor
-                                                                .withOpacity(0.3),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      child: Image.file(
-                                                        images[index],
-                                                        width: 90,
-                                                        height: 90,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                        right: 0,
-                                                        top: 0,
-                                                        child: Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              borderRadius:
-                                                              BorderRadius.all(
-                                                                Radius.circular(10),
-                                                              ),
-                                                              // shape: BoxShape.circle,
-
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  offset:
-                                                                  const Offset(
-                                                                      3.0, 3.0),
-                                                                  blurRadius: 10.0,
-                                                                  spreadRadius: 2.0,
-                                                                  color: kPrimaryColor
-                                                                      .withOpacity(
-                                                                      0.3),
-                                                                )
-                                                              ],
-                                                            ),
-                                                            child: GestureDetector(
-                                                              onTap: () {
-                                                                print('ImageM0' +
-                                                                    images.length
-                                                                        .toString());
-                                                                _deleteImageList(
-                                                                    index);
-                                                              },
-                                                              // splashColor: kPrimaryColor
-                                                              //     .withOpacity(0.4),
-                                                              child: Icon(
-                                                                Icons.delete,
-                                                                color: Colors.red,
-                                                              ),
-                                                            )))
-                                                  ],
-                                                );
-                                              }),
-                                          //   ),
-                                          // ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-
-                        Container(
+                          Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 0.0),
                             child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.error_outline_outlined,
-                                        color: Colors.grey[350],
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.monetization_on_outlined,
+                                      color: Colors.grey[350],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Product Price',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 15, left: 10),
-                                        child: Text(
-                                          'Product Condition',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[500],
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  // height: size.height * 0.2,
+                                  width: size.width * 0.85,
+                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(-2.5, 3.0),
+                                        blurRadius: 1.5,
+                                        spreadRadius: 1.5,
+                                        color: kPrimaryColor.withOpacity(0.3),
                                       )
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 5,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 7,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 0),
+                                          child: PriceCounter(
+                                            decreasePrice: () {
+                                              if (priceOfProduct > 100) {
+                                                setState(() {
+                                                  priceOfProduct -= 100;
+                                                });
+                                              }
+                                            },
+                                            changeAmount: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CustomAlert(
+                                                  child:
+                                                      CustomAlertDialogWidget(
+                                                    alertTitle: 'Product Price',
+                                                    alertDesc:
+                                                        'Enter desired price for your product',
+                                                    positiveBtnFunc: () {
+                                                      setState(() {});
+                                                      Navigator.pop(context);
+                                                    },
+                                                    positiveBtnText:
+                                                        'Confirm Price',
+                                                    textController:
+                                                        _productAmountController,
+                                                    onTextChange: (amount) {
+                                                      priceOfProduct =
+                                                          int.parse(amount);
+                                                    },
+                                                    enteredText: priceOfProduct
+                                                        .toString(),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            increasePrice: () {
+                                              setState(() {
+                                                priceOfProduct += 100;
+                                              });
+                                            },
+                                            productPrice: priceOfProduct,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                          flex: 3,
+                                          child: Container(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'Negotiable',
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.grey[600]),
+                                                ),
+                                                // SizedBox(
+                                                //   height: 5,
+                                                // ),
+                                                Switch(
+                                                  value: isNegotiable,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isNegotiable = value;
+                                                      print(isNegotiable);
+                                                    });
+                                                  },
+                                                  activeTrackColor:
+                                                      kPrimaryColor
+                                                          .withOpacity(0.5),
+                                                  activeColor: kPrimaryColor,
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                    ],
                                   ),
-                                  Container(
-                                    height: 40,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: conditionList.length,
-                                        itemBuilder: (context, index) =>
-                                            buildConditionType(index, context)),
-                                  ),
-                                ]
-                            )
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 0.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.text_format,
-                                    color: Colors.grey[350],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 15, left: 10),
-                                    child: Text(
-                                      'Product Features',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[500],
-                                          fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 0.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.text_format,
+                                      color: Colors.grey[350],
                                     ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                child: Container(
-                                  // height: size.height * 0.25,
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Product Description',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  height: size.height * 0.2,
                                   width: size.width * 0.85,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -1142,149 +810,531 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
                                       )
                                     ],
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 10),
-                                            child: TextFormField(
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _featureTyped = value;
-                                                });
-                                              },
-                                              controller: _productFeatureController,
-                                              textAlign: TextAlign.justify,
-                                              decoration: new InputDecoration(
-                                                focusedBorder:
-                                                UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: kPrimaryLightColor,
-                                                      width: 1.0),
-                                                ),
-                                                enabledBorder: InputBorder.none,
-                                                // errorBorder: InputBorder.none,
-                                                hintText:
-                                                'Add feature (e.g Size, Color, etc)',
-                                                hintStyle: TextStyle(
-                                                    color: Colors.grey[400]),
-                                                disabledBorder: InputBorder.none,
-                                                // counter: Offstage()
-                                              ),
-                                              style: TextStyle(
-                                                  fontSize: 22,
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: size.width,
-                                            alignment: Alignment.centerRight,
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: UnconstrainedBox(
-                                              child: Align(
-                                                alignment: Alignment.centerRight,
-                                                child: FlatButton(
-                                                    onPressed: () {
-                                                      if (_featureTyped != null) {
-                                                        // _formKey.currentState
-                                                        //     .reset();
-                                                        FocusScope.of(context)
-                                                            .unfocus();
-                                                        _productFeatureController
-                                                            .clear();
-                                                        setState(() {
-                                                          _featureList
-                                                              .add(_featureTyped);
-                                                        });
-                                                        print(
-                                                            _featureList.length);
-                                                      }
-                                                    },
-                                                    color: kPrimaryColor,
-                                                    splashColor:
-                                                    kPrimaryLightColor,
-                                                    shape:
-                                                    new RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        new BorderRadius
-                                                            .circular(
-                                                            30.0)),
-                                                    child: Text(
-                                                      'Add',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                        FontWeight.w800,
-                                                      ),
-                                                    )),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      dynamicChips(),
-                                    ],
+                                  child:
+                                      // Center(
+                                      //     child:
+                                      Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: TextFormField(
+                                      textAlign: TextAlign.justify,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          ProductDesc = value;
+                                        });
+                                      },
+                                      maxLines: 4,
+                                      maxLength: 100,
+                                      controller: _productDescController,
+                                      decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          hintText:
+                                              'Enter description of the Product',
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey[400]),
+                                          disabledBorder: InputBorder.none,
+                                          counter: Offstage()),
+                                      style: TextStyle(
+                                          fontSize: 22, color: Colors.black),
+                                    ),
                                   ),
                                   // ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 0.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.school_outlined,
+                                      color: Colors.grey[350],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Select Institution',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  width: size.width * 0.8,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    // shape: BoxShape.circle,
+
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(3.0, 3.0),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 2.0,
+                                        color: kPrimaryColor.withOpacity(0.3),
+                                      )
+                                    ],
+                                  ),
+                                  child: getSearchableDropdown(institutionList),
+                                  // child: DropdownButtonHideUnderline(
+                                  //   child: DropdownButton<String>(
+                                  //     isExpanded: true,
+                                  //     hint: Text(
+                                  //       "Choose nearest Institution",
+                                  //       style: TextStyle(
+                                  //           color: Colors.black87,
+                                  //           fontSize: 14,
+                                  //           fontWeight: FontWeight.w500),
+                                  //     ),
+                                  //     value: selectedUniversity,
+                                  //     iconEnabledColor: kPrimaryColor,
+                                  //     onChanged: (String selectedInstitution) {
+                                  //       setState(() {
+                                  //         selectedUniversity =
+                                  //             selectedInstitution;
+                                  //       });
+                                  //     },
+                                  //     items: institutionList.map((String user) {
+                                  //       return DropdownMenuItem<String>(
+                                  //           value: user,
+                                  //           child: Text(
+                                  //             user,
+                                  //             overflow: TextOverflow.ellipsis,
+                                  //             style: TextStyle(
+                                  //                 color: Colors.black87,
+                                  //                 fontSize: 14,
+                                  //                 fontWeight: FontWeight.w500),
+                                  //           ));
+                                  //     }).toList(),
+                                  //   ),
+                                  // ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 0.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.photo_album,
+                                      color: Colors.grey[350],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Add Product Photos',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      padding: EdgeInsets.only(left: 15),
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 80,
+                                            width: 80,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                              // shape: BoxShape.circle,
+
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  offset:
+                                                      const Offset(3.0, 3.0),
+                                                  blurRadius: 10.0,
+                                                  spreadRadius: 2.0,
+                                                  color: kPrimaryColor
+                                                      .withOpacity(0.3),
+                                                )
+                                              ],
+                                            ),
+                                            child: InkWell(
+                                              onTap: () {
+                                                _showPicker(context);
+                                              },
+                                              splashColor: kPrimaryColor
+                                                  .withOpacity(0.4),
+                                              child: Icon(
+                                                Icons.photo_camera,
+                                                color: kPrimaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Row(
+                                            children: List.generate(
+                                                images.length, (index) {
+                                              return Stack(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    margin: EdgeInsets.all(8),
+                                                    height: 100,
+                                                    width: 100,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(10),
+                                                      ),
+                                                      // shape: BoxShape.circle,
+
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          offset: const Offset(
+                                                              3.0, 3.0),
+                                                          blurRadius: 10.0,
+                                                          spreadRadius: 2.0,
+                                                          color: kPrimaryColor
+                                                              .withOpacity(0.3),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    child: Image.file(
+                                                      images[index],
+                                                      width: 90,
+                                                      height: 90,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                      right: 0,
+                                                      top: 0,
+                                                      child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  10),
+                                                            ),
+                                                            // shape: BoxShape.circle,
+
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                offset:
+                                                                    const Offset(
+                                                                        3.0,
+                                                                        3.0),
+                                                                blurRadius:
+                                                                    10.0,
+                                                                spreadRadius:
+                                                                    2.0,
+                                                                color: kPrimaryColor
+                                                                    .withOpacity(
+                                                                        0.3),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              print('ImageM0' +
+                                                                  images.length
+                                                                      .toString());
+                                                              _deleteImageList(
+                                                                  index);
+                                                            },
+                                                            // splashColor: kPrimaryColor
+                                                            //     .withOpacity(0.4),
+                                                            child: Icon(
+                                                              Icons.delete,
+                                                              color: Colors.red,
+                                                            ),
+                                                          )))
+                                                ],
+                                              );
+                                            }),
+                                            //   ),
+                                            // ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 0.0),
+                              child: Column(children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline_outlined,
+                                      color: Colors.grey[350],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Product Condition',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  height: 40,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: conditionList.length,
+                                      itemBuilder: (context, index) =>
+                                          buildConditionType(index, context)),
+                                ),
+                              ])),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 0.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.text_format,
+                                      color: Colors.grey[350],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 15, left: 10),
+                                      child: Text(
+                                        'Product Features',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  child: Container(
+                                    // height: size.height * 0.25,
+                                    width: size.width * 0.85,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                      // shape: BoxShape.circle,
+
+                                      boxShadow: [
+                                        BoxShadow(
+                                          offset: const Offset(3.0, 3.0),
+                                          blurRadius: 10.0,
+                                          spreadRadius: 2.0,
+                                          color: kPrimaryColor.withOpacity(0.3),
+                                        )
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 10),
+                                              child: TextFormField(
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _featureTyped = value;
+                                                  });
+                                                },
+                                                controller:
+                                                    _productFeatureController,
+                                                textAlign: TextAlign.justify,
+                                                decoration: new InputDecoration(
+                                                  focusedBorder:
+                                                      UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color:
+                                                            kPrimaryLightColor,
+                                                        width: 1.0),
+                                                  ),
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                  // errorBorder: InputBorder.none,
+                                                  hintText:
+                                                      'Add feature (e.g Size, Color, etc)',
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey[400]),
+                                                  disabledBorder:
+                                                      InputBorder.none,
+                                                  // counter: Offstage()
+                                                ),
+                                                style: TextStyle(
+                                                    fontSize: 22,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: size.width,
+                                              alignment: Alignment.centerRight,
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              child: UnconstrainedBox(
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: FlatButton(
+                                                      onPressed: () {
+                                                        if (_featureTyped !=
+                                                            null) {
+                                                          // _formKey.currentState
+                                                          //     .reset();
+                                                          FocusScope.of(context)
+                                                              .unfocus();
+                                                          _productFeatureController
+                                                              .clear();
+                                                          setState(() {
+                                                            _featureList.add(
+                                                                _featureTyped);
+                                                          });
+                                                          print(_featureList
+                                                              .length);
+                                                        }
+                                                      },
+                                                      color: kPrimaryColor,
+                                                      splashColor:
+                                                          kPrimaryLightColor,
+                                                      shape: new RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              new BorderRadius
+                                                                      .circular(
+                                                                  30.0)),
+                                                      child: Text(
+                                                        'Add',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                        ),
+                                                      )),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        dynamicChips(),
+                                      ],
+                                    ),
+                                    // ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                    bottom: 20,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => FocusScope.of(context).unfocus(),
-                      onPanDown: (_) => FocusScope.of(context).unfocus(),
-                      child: Container(
-                        width: size.width,
-                        child: Center(
-                          child: FlatButton(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.25, vertical: 10),
-                              onPressed: () {
-                                uploadMutliImg(images, user);
-                              },
-                              // onPressed: (){},
-                              color: kPrimaryColor,
-                              splashColor: kPrimaryLightColor,
-                              shape: new RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(30.0)),
-                              child: Text(
-                                'Post Ad',
-                                style: TextStyle(
-                                  color: Colors.white,
-
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              )),
+                  Positioned(
+                      bottom: 20,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => FocusScope.of(context).unfocus(),
+                        onPanDown: (_) => FocusScope.of(context).unfocus(),
+                        child: Container(
+                          width: size.width,
+                          child: Center(
+                            child: FlatButton(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.25,
+                                    vertical: 10),
+                                onPressed: () {
+                                  uploadMutliImg(images, user);
+                                },
+                                // onPressed: (){},
+                                color: kPrimaryColor,
+                                splashColor: kPrimaryLightColor,
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(30.0)),
+                                child: Text(
+                                  'Post Ad',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                )),
+                          ),
                         ),
-                      ),
-                    ))
-              ],
+                      ))
+                ],
+              ),
             ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }
 
 class PriceCounter extends StatelessWidget {
   PriceCounter(
-      {Key key, this.productPrice, this.decreasePrice, this.increasePrice, this.changeAmount})
+      {Key key,
+      this.productPrice,
+      this.decreasePrice,
+      this.increasePrice,
+      this.changeAmount})
       : super(key: key);
   final int productPrice;
-  final Function decreasePrice, increasePrice,changeAmount;
+  final Function decreasePrice, increasePrice, changeAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -1296,20 +1346,17 @@ class PriceCounter extends StatelessWidget {
         ),
         InkWell(
           onTap: changeAmount,
-          child:
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
-            child:
-      AutoSizeText(
-        '\u{20A6}$productPrice',
-        minFontSize: 10,
-        maxLines: 2,
-        maxFontSize: 15,
-        style: Theme.of(context).textTheme.headline6,
-        overflow: TextOverflow.ellipsis,
-      )
-
-          ) ,
+          child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
+              child: AutoSizeText(
+                '\u{20A6}$productPrice',
+                minFontSize: 10,
+                maxLines: 2,
+                maxFontSize: 15,
+                style: Theme.of(context).textTheme.headline6,
+                overflow: TextOverflow.ellipsis,
+              )),
         ),
         buildOutlineButton(
           icon: Icons.add,

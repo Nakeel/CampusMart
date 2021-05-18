@@ -43,6 +43,7 @@ class _BodyState extends State<Body> {
     timer?.cancel();
     super.dispose();
   }
+
   @override
   void initState() {
     GoodAdNotifier goodsNotifier =
@@ -53,7 +54,7 @@ class _BodyState extends State<Body> {
         Provider.of<WantsNotifier>(context, listen: false);
     DatabaseService().getWants(wantsNotifier);
 
-     timer = Timer(Duration(seconds: 4), () {
+    timer = Timer(Duration(seconds: 4), () {
       setState(() {
         username = user.username;
         email = user.email;
@@ -63,15 +64,14 @@ class _BodyState extends State<Body> {
     });
 
     super.initState();
-
   }
 
   saveUserInfo(CustomUserInfo user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(EMAIL, user.email);
     await prefs.setString(USERNAME, user.username);
-    await prefs.setString(FULLNAME,user.fullname);
-    await prefs.setString(PROFILE_IMG,user.profileImgUrl);
+    await prefs.setString(FULLNAME, user.fullname);
+    await prefs.setString(PROFILE_IMG, user.profileImgUrl);
   }
 
   Future<Null> _refresh() async {
@@ -116,14 +116,14 @@ class _BodyState extends State<Body> {
               TitleWithMoreBtn(
                 title: "Sellers Post",
                 press: () {
-                   Navigator.pushNamed(context, 'categorizeList',
-                arguments: 'Clothes');
+                  Navigator.pushNamed(context, 'categorizeList',
+                      arguments: 'Clothes');
                 },
               ),
               RecommendedItems(
                 goodsList: goodsNotifier.goodsAdList,
               ),
-              TitleWithMoreBtn(title: "Latest Requests", press: () {}),
+              TitleWithMoreBtn(title: "Buyers Request", press: () {}),
               FeaturedItems(
                 listWants: wantsNotifier.wantList,
               ),

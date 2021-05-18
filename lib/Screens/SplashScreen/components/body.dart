@@ -16,17 +16,15 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   bool showLoadingBar = false;
   final AuthService _authService = AuthService();
-var hasBeenCalled =  false;
- Timer timer;
-
+  var hasBeenCalled = false;
+  Timer timer;
 
   @override
   void initState() {
     super.initState();
-    timer = Timer(Duration(seconds: 3), () =>
-       setLoading(true)
-      // _getStartupScreen(context)
-       );
+    timer = Timer(Duration(seconds: 3), () => setLoading(true)
+        // _getStartupScreen(context)
+        );
   }
 
   @override
@@ -36,20 +34,18 @@ var hasBeenCalled =  false;
   }
 
   void _getStartupScreen(BuildContext context) {
-    SharedPreference()
-        .getBoolValuesSF(appHasRun)
-        .then((value){
-          handleHasRun(value, context) ;
-        });
+    SharedPreference().getBoolValuesSF(appHasRun).then((value) {
+      handleHasRun(value, context);
+    });
   }
 
   _loginUser(String email, String password, BuildContext context) async {
-      showLoadingBar = true;
+    showLoadingBar = true;
     await _authService.signInWithEmailAndPass(email, password).then((result) {
       if (result == null) {
         // setState(() {
         //   showLoadingBar = false;
-          Navigator.pushReplacementNamed(context, "log-in");
+        Navigator.pushReplacementNamed(context, "log-in");
         // });
       } else {
         Navigator.pushReplacementNamed(context, "home");
@@ -58,11 +54,11 @@ var hasBeenCalled =  false;
   }
 
   Future<void> handleUserLoggin(bool hasLogin, BuildContext context) async {
-    String destRoute ;
+    String destRoute;
     if (!hasLogin) {
       // SharedPreference().addBoolToSF(hasUserLogin, true);
       destRoute = "welcome";
-    Navigator.pushReplacementNamed(context, destRoute);
+      Navigator.pushReplacementNamed(context, destRoute);
     } else {
       var stillLoggedIn =
           await SharedPreference().getBoolValuesSF(hasUserLogin);
@@ -72,7 +68,7 @@ var hasBeenCalled =  false;
         _loginUser(email, password, context);
       } else {
         destRoute = "log-in";
-    Navigator.pushReplacementNamed(context, destRoute);
+        Navigator.pushReplacementNamed(context, destRoute);
       }
     }
   }
@@ -91,16 +87,18 @@ var hasBeenCalled =  false;
 
   void setLoading(bool show) {
     setState(() {
-      showLoadingBar = show;  
+      showLoadingBar = show;
       hasBeenCalled = true;
     });
     // Navigator.pushNamed(context, _getStartupScreen());
   }
+
   @override
   Widget build(BuildContext context) {
-    if(!hasBeenCalled){
+    if (!hasBeenCalled) {
       _getStartupScreen(context);
-    };
+    }
+    ;
     Size size = MediaQuery.of(context).size;
     //provide screen size
     return Background(
@@ -127,7 +125,7 @@ var hasBeenCalled =  false;
                     padding: EdgeInsets.only(top: 10.0),
                   ),
                   Text(
-                    "Campus Mart",
+                    "Campus Market",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 24.0,

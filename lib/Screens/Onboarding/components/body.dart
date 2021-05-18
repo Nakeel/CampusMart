@@ -57,6 +57,7 @@ class _BodyState extends State<Body> {
   bool showGetStartedBtn = false;
   double pos_t;
   double pos_b;
+  BuildContext _buildContext;
 
   final pages = [
     Container(
@@ -78,10 +79,10 @@ class _BodyState extends State<Body> {
                   "Campus Market",
                   style: Body.appNameStyle,
                 ),
-                Text(
-                  "Skip",
-                  style: Body.appNameStyle,
-                ),
+                // Text(
+                //   "Skip",
+                //   style: Body.appNameStyle,
+                // ),
               ],
               // ),
             ),
@@ -127,10 +128,10 @@ class _BodyState extends State<Body> {
                   "Campus Market",
                   style: Body.appNameStyleWhite,
                 ),
-                Text(
-                  "Skip",
-                  style: Body.appNameStyleWhite,
-                ),
+                // Text(
+                //   "Skip",
+                //   style: Body.appNameStyleWhite,
+                // ),
               ],
             ),
           ),
@@ -175,15 +176,15 @@ class _BodyState extends State<Body> {
                   "Campus Market",
                   style: Body.appNameStyleWhite,
                 ),
-                InkWell(
-                  onTap: () {
-                    // Navigator.pushNamed(context, "welcome");
-                  },
-                  child: Text(
-                    "Skip",
-                    style: Body.appNameStyleWhite,
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pushNamed(_buildContext, "welcome");
+                //   },
+                //   child: Text(
+                //     "Skip",
+                //     style: Body.appNameStyleWhite,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -214,6 +215,10 @@ class _BodyState extends State<Body> {
       ),
     ),
   ];
+
+  void openGetStarted() {
+    Navigator.pushNamed(_buildContext, "welcome");
+  }
 
   @override
   Widget build(BuildContext context) {

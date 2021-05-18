@@ -41,7 +41,7 @@ class _BodyState extends State<Body> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Welcome to Campus Mart",
+                "Welcome to Campus Market",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -69,7 +69,7 @@ class _BodyState extends State<Body> {
               RoundedButton(
                 text: "Sign Up",
                 press: () {
-                    Navigator.of(context).pushNamed('sign-up');
+                  Navigator.of(context).pushNamed('sign-up');
                   // Navigator.of(context).pushNamed('register');
 
                   // Navigator.push(context,
@@ -120,7 +120,6 @@ class _BodyState extends State<Body> {
               //   textColor: Colors.black,
               //   color: kPrimaryLightColor,
               // ),
-            
             ],
           ),
         ),

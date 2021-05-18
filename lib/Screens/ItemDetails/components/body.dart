@@ -118,12 +118,13 @@ class Body extends StatelessWidget {
                             message:
                                 'Hi, I like to make enquiry about your ad of ' +
                                     goodItem.itemTitle +
-                                    ' on Campus Mart');
+                                    ' on Campus Market');
                         Navigator.of(context).pop();
                       }),
                   new Divider(),
                   new ListTile(
-                    leading: Image.asset('assets/icons/whatsapp.png',height: 20,width: 20),
+                    leading: Image.asset('assets/icons/whatsapp.png',
+                        height: 20, width: 20),
                     title: new Text('Chat with seller on whatsapp'),
                     onTap: () {
                       launchWhatsApp(
@@ -131,7 +132,7 @@ class Body extends StatelessWidget {
                           message:
                               'Hi, I like to make enquiry about your ad of ' +
                                   goodItem.itemTitle +
-                                  ' on Campus Mart');
+                                  ' on Campus Market');
                       Navigator.of(context).pop();
                     },
                   ),

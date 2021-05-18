@@ -49,11 +49,12 @@ class _AddWantsMainState extends State<AddWantsMain> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 1), ()=>  isShowDialogAgain());
+      Future.delayed(Duration(seconds: 1), () => isShowDialogAgain());
       // getUserData();
     });
     super.initState();
   }
+
   isShowDialogAgain() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.getBool(RouteConstant.ADD_REQUEST) ?? true
@@ -67,8 +68,8 @@ class _AddWantsMainState extends State<AddWantsMain> {
         builder: (context) => InfoDialogWidget(
             title: 'Need new items',
             description:
-            'Create an item request and sit back and wait for user to reach out in no time',
-            primaryButtonText: 'Learn More',
+                'Create an item request and sit back and wait for user to reach out in no time',
+            primaryButtonText: 'Close',
             infoType: RouteConstant.ADD_REQUEST,
             infoIcon: 'assets/icons/onlineadvertising.png',
             primaryButtonFunc: () {
@@ -227,7 +228,9 @@ class _AddWantsMainState extends State<AddWantsMain> {
                                   _isLoading = false;
                                 });
                               } else {
-                                DatabaseService().updateUserWantsAdData(widget.user.uuid,);
+                                DatabaseService().updateUserWantsAdData(
+                                  widget.user.uuid,
+                                );
                                 setState(() {
                                   Timer(Duration(seconds: 3), () {
                                     _isLoading = false;

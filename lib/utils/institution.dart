@@ -1,5 +1,4 @@
-
-const List<String> institutionList =  [
+const List<String> institutionList = [
   "Michael Okpara University of Agriculture at Umudike (Federally owned)",
   "Abia State University in Uturu (State owned)",
   "College of Health Sciences Aba",
@@ -19,6 +18,7 @@ const List<String> institutionList =  [
   "Madonna University, Okija",
   "St Paul's University, Awka",
   "University of Uyo",
+  "Federal University of Agricultural, Abeokuta",
   "Maritime Academy of Nigeria, Oron",
   "Akwa Ibom State University [Oruk Anam LGA And Mkpat Enin LGA]",
   "Obong University, Obong Ntak Inyang",

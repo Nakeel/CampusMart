@@ -43,7 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
   bool _isActive = false;
 
-  String username = '', firstname = '', email = '', fullname = '', profImgUrl = '';
+  String username = '',
+      firstname = '',
+      email = '',
+      fullname = '',
+      profImgUrl = '';
   final AuthService _authService = AuthService();
   CurvedNavigationBar _curvedNavigationBar;
   Timer timer;
@@ -75,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Colors.white,
     ),
   ];
-
 
   @override
   void dispose() {
@@ -110,6 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
     profImgUrl = prefs.getString(PROFILE_IMG);
   }
 
+  // saveUserID(String uiid) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString(UIID, uiid);
+  // }
 
   GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
@@ -124,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Size size = MediaQuery.of(context).size;
     print('Selected ' + _selectedIndex.toString());
+    // saveUserID(userData.uid);
     // final user = Provider.of<CustomUserInfo>(context);
 
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -133,112 +141,108 @@ class _HomeScreenState extends State<HomeScreen> {
     //     builder: (context, accountProvider, child)
     // {
 
-
     // user = Provider.of<CustomUserInfo>(context);
-      return
-        WillPopScope(
-            onWillPop: () {
-              return _closeApp(context);
-            },
-            child: Scaffold(
-              key: drawerKey,
-              appBar: buildAppBar(),
-              drawerEdgeDragWidth: 20,
-              drawerDragStartBehavior: DragStartBehavior.start,
-              drawer: Drawer(
-                child: ListView(
-                  children: [
-                    UserAccountsDrawerHeader(
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius:
+    return WillPopScope(
+        onWillPop: () {
+          return _closeApp(context);
+        },
+        child: Scaffold(
+          key: drawerKey,
+          appBar: buildAppBar(),
+          drawerEdgeDragWidth: 20,
+          drawerDragStartBehavior: DragStartBehavior.start,
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius:
                         BorderRadius.only(bottomLeft: Radius.circular(26)),
-                      ),
-                      accountName: Text(fullname),
-                      accountEmail: Text(email),
-                      currentAccountPicture: ClipRRect(
-                        borderRadius: BorderRadius.circular(70),
-                        child: Image(
-                          image: NetworkImage(
-                              profImgUrl.isEmpty ?'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg' : profImgUrl),
-                          // image: NetworkImage(
-                          //     "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMesut_%25C3%2596zil&psig=AOvVaw0ognYiJKhoWWpXeMRPKM5S&ust=1599566854250000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjU_IKB1-sCFQAAAAAdAAAAABAD"),
-                          width: 70,
-                          height: 70,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                  ),
+                  accountName: Text(fullname),
+                  accountEmail: Text(email),
+                  currentAccountPicture: ClipRRect(
+                    borderRadius: BorderRadius.circular(70),
+                    child: Image(
+                      image: NetworkImage(profImgUrl.isEmpty
+                          ? 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
+                          : profImgUrl),
+                      // image: NetworkImage(
+                      //     "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMesut_%25C3%2596zil&psig=AOvVaw0ognYiJKhoWWpXeMRPKM5S&ust=1599566854250000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjU_IKB1-sCFQAAAAAdAAAAABAD"),
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.cover,
                     ),
-                    Column(
-                      children: dashBoardCatList
-                          .asMap()
-                          .entries
-                          .map(
-                            (e) =>
-                            MenuTileWidget(
-                              press: () {
-                                // Navigator.of(context).pop();
-                                drawerKey.currentState.openEndDrawer();
-                                Timer(Duration(milliseconds: 250),
-                                        () => navigateTo(e.key));
-                              },
-                              icon: dashBoardCatIconList[e.key],
-                              title: dashBoardCatList[e.key],
-                              index: e.key,
-                              selectedIndex: _selectedIndex,
-                            ),
-                      )
-                          .toList(),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: AspectRatio(
-                          aspectRatio: 16 / 5,
-                          child: Image.asset(
-                            "assets/images/h_ad.jpg",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-              body: StreamProvider<CustomUserInfo>.value(
-                  value: DatabaseService().userData(userData.uid),
-                  child: LoadingOverlay(
-                      isLoading: _isLoading,
-                      child: _buildBody(_selectedIndex))),
-              bottomNavigationBar: CurvedNavigationBar(
-                color: kPrimaryColor.withOpacity(0.7),
-                backgroundColor: kPrimaryColor.withOpacity(0.1),
-                buttonBackgroundColor: kPrimaryColor.withOpacity(0.7),
-                initialIndex: 1,
-                selectedIndex: _selectedIndex,
-                items: navBarIconList,
-                isActive: _isActive,
-                shouldNavigate: _shouldNavigate,
-                animationDuration: Duration(milliseconds: 400),
-                animationCurve: Curves.bounceInOut,
-                onTap: (index) {
-                  if (index != _selectedIndex && !_isLoading) {
-                    setState(() {
-                      _shouldNavigate = false;
-                      // _temp = index;
-                      _selectedIndex = index;
-                      _currentScreen = setAppTitle(index);
-                    });
-                    var currentIcon = navBarIconList[index] as Icon;
-                  }
-                },
-              ),
-            )
-        );
+                Column(
+                  children: dashBoardCatList
+                      .asMap()
+                      .entries
+                      .map(
+                        (e) => MenuTileWidget(
+                          press: () {
+                            // Navigator.of(context).pop();
+                            drawerKey.currentState.openEndDrawer();
+                            Timer(Duration(milliseconds: 250),
+                                () => navigateTo(e.key));
+                          },
+                          icon: dashBoardCatIconList[e.key],
+                          title: dashBoardCatList[e.key],
+                          index: e.key,
+                          selectedIndex: _selectedIndex,
+                        ),
+                      )
+                      .toList(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 5,
+                      child: Image.asset(
+                        "assets/images/h_ad.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          body: StreamProvider<CustomUserInfo>.value(
+              value: DatabaseService().userData(userData.uid),
+              child: LoadingOverlay(
+                  isLoading: _isLoading, child: _buildBody(_selectedIndex))),
+          bottomNavigationBar: CurvedNavigationBar(
+            color: kPrimaryColor.withOpacity(0.7),
+            backgroundColor: kPrimaryColor.withOpacity(0.1),
+            buttonBackgroundColor: kPrimaryColor.withOpacity(0.7),
+            initialIndex: 1,
+            selectedIndex: _selectedIndex,
+            items: navBarIconList,
+            isActive: _isActive,
+            shouldNavigate: _shouldNavigate,
+            animationDuration: Duration(milliseconds: 400),
+            animationCurve: Curves.bounceInOut,
+            onTap: (index) {
+              if (index != _selectedIndex && !_isLoading) {
+                setState(() {
+                  _shouldNavigate = false;
+                  // _temp = index;
+                  _selectedIndex = index;
+                  _currentScreen = setAppTitle(index);
+                });
+                var currentIcon = navBarIconList[index] as Icon;
+              }
+            },
+          ),
+        ));
     // })
   }
 
@@ -350,18 +354,19 @@ class _HomeScreenState extends State<HomeScreen> {
       elevation: 2,
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          // ignore: missing_required_param
-          child: 
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: Icon(
-          //     Icons.shopping_cart,
-          //     color: Colors.white,
-          //   ),
-          // ),
-          Container(width: 40,)
-        )
+            padding: const EdgeInsets.only(right: 8.0),
+            // ignore: missing_required_param
+            child:
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(
+                //     Icons.shopping_cart,
+                //     color: Colors.white,
+                //   ),
+                // ),
+                Container(
+              width: 40,
+            ))
       ],
       title: Center(child: Text(_currentScreen)),
       leading: IconButton(

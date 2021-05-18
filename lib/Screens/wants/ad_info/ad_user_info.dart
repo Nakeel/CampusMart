@@ -185,7 +185,6 @@ class _AdUserInfoState extends State<AdUserInfo> {
                           onTap: () {
                             _launchCaller(widget.want.phone);
                             // _launchCaller('2349025179651');
-                            
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -209,18 +208,25 @@ class _AdUserInfoState extends State<AdUserInfo> {
                             showDialog(
                               context: context,
                               builder: (context) => ConfirmMessageAppDialog(
-                                   primaryButtonText: 'Close',
+                                  primaryButtonText: 'Close',
                                   primaryButtonFunc: () {
                                     launchWhatsApp(
-                                        phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Martet');
+                                        phone: widget.want.phone,
+                                        message:
+                                            'Hi, I like to make enquiry about your ad of ' +
+                                                widget.want.post +
+                                                ' on Campus Marketet');
                                     Navigator.of(context).pop();
                                   },
                                   secButtonFunc: () {
                                     launchSmsSeller(
-                                        phone: widget.want.phone, message: 'Hi, I like to make enquiry about your ad of '+widget.want.post + ' on Campus Martet');
+                                        phone: widget.want.phone,
+                                        message:
+                                            'Hi, I like to make enquiry about your ad of ' +
+                                                widget.want.post +
+                                                ' on Campus Marketet');
                                     Navigator.of(context).pop();
-                                  }
-                                  ),
+                                  }),
                             );
                           },
                           child: Container(
@@ -275,17 +281,18 @@ class _AdUserInfoState extends State<AdUserInfo> {
                   // transitionOnUserGestures: true,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(250),
-                    child: widget.want.userImgUrl != '' ? Image(
-                      image: NetworkImage(
-                          widget.want.userImgUrl),
-                      width: 240,
-                      height: 240,
-                      fit: BoxFit.cover,
-                    ) : Icon(
-                      Icons.person,
-                      color: kPrimaryColor,
-                      size: 240,
-                    ),
+                    child: widget.want.userImgUrl != ''
+                        ? Image(
+                            image: NetworkImage(widget.want.userImgUrl),
+                            width: 240,
+                            height: 240,
+                            fit: BoxFit.cover,
+                          )
+                        : Icon(
+                            Icons.person,
+                            color: kPrimaryColor,
+                            size: 240,
+                          ),
                     // BlurHash(
                     //         color: Colors.blueGrey[100],
                     //         hash: '',
@@ -294,8 +301,6 @@ class _AdUserInfoState extends State<AdUserInfo> {
                     //         duration: Duration(seconds: 5),
                     //         curve: Curves.easeOut,
                     //       ),
-                    
-                    
                   ),
                 ),
               ),

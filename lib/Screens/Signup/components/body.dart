@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class Body extends StatefulWidget {
   final Widget child;
@@ -29,7 +30,14 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String _email, _password,_confirmPassword, _phone, fullname, nick, selectedUniversity, error;
+  String _email,
+      _password,
+      _confirmPassword,
+      _phone,
+      fullname,
+      nick,
+      selectedUniversity,
+      error;
   bool _showloader = false;
   final AuthService _authService = AuthService();
 
@@ -47,12 +55,10 @@ class _BodyState extends State<Body> {
     String data = await rootBundle.loadString('assets/json/country.json');
     countriesList = countryCodeFromJson(data);
     selectedCountryCode = countriesList[0];
-    setState(() {
-    });
+    setState(() {});
 
     print(countriesList);
   }
-
 
   @override
   void initState() {
@@ -60,6 +66,35 @@ class _BodyState extends State<Body> {
       await loadCountries();
     });
     super.initState();
+  }
+
+  Widget getSearchableDropdown(List<String> listData) {
+    List<DropdownMenuItem> items = [];
+    for (int i = 0; i < listData.length; i++) {
+      items.add(new DropdownMenuItem(
+        child: new Text(
+          listData[i],
+        ),
+        value: listData[i],
+      ));
+    }
+    return SearchableDropdown(
+      items: items,
+      isExpanded: true,
+      underline: SizedBox(),
+      value: selectedUniversity,
+      isCaseSensitiveSearch: false,
+      hint: new Text('Select Institution'),
+      searchHint: new Text(
+        'Search Institution',
+        style: new TextStyle(fontSize: 20),
+      ),
+      onChanged: (value) {
+        setState(() {
+          selectedUniversity = value;
+        });
+      },
+    );
   }
 
   @override
@@ -94,9 +129,8 @@ class _BodyState extends State<Body> {
                     height: size.height * 0.03,
                   ),
                   RoundedInputField(
-                    validateEmail: (val) => (val.isEmpty)
-                        ? "Enter a valid fields"
-                        : null,
+                    validateEmail: (val) =>
+                        (val.isEmpty) ? "Enter a valid fields" : null,
                     // (value) {
                     //   value ? "Enter a valid email address" : null;
                     // },
@@ -125,7 +159,6 @@ class _BodyState extends State<Body> {
                     },
                   ),
 
-
                   SizedBox(height: 15),
                   Container(
                       decoration: BoxDecoration(
@@ -142,7 +175,7 @@ class _BodyState extends State<Body> {
                                 child: DropdownButton<CountryCode>(
                                   underline: SizedBox(),
                                   isExpanded: true,
-                                  hint:  Text("Select"),
+                                  hint: Text("Select"),
                                   value: selectedCountryCode,
                                   isDense: false,
                                   onChanged: (CountryCode newValue) {
@@ -160,15 +193,18 @@ class _BodyState extends State<Body> {
                                             Container(
                                               height: 20,
                                               width: 20,
-                                              margin: EdgeInsets.symmetric(horizontal: 10),
-                                              child: SvgPicture.network(country.flag,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: SvgPicture.network(
+                                                country.flag,
                                                 semanticsLabel: 'CountryCode',
                                                 // placeholderBuilder: (context) => Icon(Icons.flag_sharp,color: Constants.primaryColor,),
                                               ),
                                             ),
                                             Text(
-                                              '+${country.callingCodes[0]}' ,
-                                              style: new TextStyle(color: Colors.black),
+                                              '+${country.callingCodes[0]}',
+                                              style: new TextStyle(
+                                                  color: Colors.black),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                             )
@@ -177,8 +213,7 @@ class _BodyState extends State<Body> {
                                       ),
                                     );
                                   }).toList(),
-                                )
-                            ),
+                                )),
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -198,16 +233,22 @@ class _BodyState extends State<Body> {
                                     labelText: 'Phone',
                                     counterText: '',
                                     border: OutlineInputBorder(
-                                        borderSide: BorderSide( width: 0, style: BorderStyle.none,),
-                                        borderRadius:  BorderRadius.all( Radius.circular(5.0)),)),
+                                      borderSide: BorderSide(
+                                        width: 0,
+                                        style: BorderStyle.none,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                    )),
                                 onChanged: (value) {
                                   setState(() {
                                     _phone = value;
                                   });
                                 },
-                                validator: (val) => (val.length!=11 && val.isEmpty)
-                                      ? "Enter a valid phone number"
-                                      : null,
+                                validator: (val) =>
+                                    (val.length != 11 && val.isEmpty)
+                                        ? "Enter a valid phone number"
+                                        : null,
                                 keyboardType: TextInputType.phone,
                               ),
                             ),
@@ -233,9 +274,8 @@ class _BodyState extends State<Body> {
                   //   },
                   // ),
                   RoundedInputField(
-                    validateEmail: (val) => (val.isEmpty)
-                        ? "Enter a valid field"
-                        : null,
+                    validateEmail: (val) =>
+                        (val.isEmpty) ? "Enter a valid field" : null,
                     // (value) {
                     //   value ? "Enter a valid email address" : null;
                     // },
@@ -255,10 +295,7 @@ class _BodyState extends State<Body> {
                       // color: Colors.white,
                       color: kPrimaryLightColor,
 
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey[500]
-                      ),
+                      border: Border.all(width: 1, color: Colors.grey[500]),
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
                       ),
@@ -273,36 +310,37 @@ class _BodyState extends State<Body> {
                       //   )
                       // ],
                     ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        hint: Text(
-                          "Select Institution",
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        value: selectedUniversity,
-                        iconEnabledColor: kPrimaryColor,
-                        onChanged: (String Value) {
-                          setState(() {
-                            selectedUniversity = Value;
-                          });
-                        },
-                        items: institutionList.map((String user) {
-                          return DropdownMenuItem<String>(
-                              value: user,
-                              child: Text(
-                                user,
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400),
-                              ));
-                        }).toList(),
-                      ),
-                    ),
+                    // child: DropdownButtonHideUnderline(
+                    //   child: DropdownButton<String>(
+                    //     isExpanded: true,
+                    //     hint: Text(
+                    //       "Select Institution",
+                    //       style: TextStyle(
+                    //           color: Colors.black87,
+                    //           fontSize: 15,
+                    //           fontWeight: FontWeight.w500),
+                    //     ),
+                    //     value: selectedUniversity,
+                    //     iconEnabledColor: kPrimaryColor,
+                    //     onChanged: (String Value) {
+                    //       setState(() {
+                    //         selectedUniversity = Value;
+                    //       });
+                    //     },
+                    //     items: institutionList.map((String user) {
+                    //       return DropdownMenuItem<String>(
+                    //           value: user,
+                    //           child: Text(
+                    //             user,
+                    //             style: TextStyle(
+                    //                 color: Colors.black87,
+                    //                 fontSize: 15,
+                    //                 fontWeight: FontWeight.w400),
+                    //           ));
+                    //     }).toList(),
+                    //   ),
+                    // ),
+                    child: getSearchableDropdown(institutionList),
                   ),
 
                   RoundedPasswordField(
@@ -322,9 +360,8 @@ class _BodyState extends State<Body> {
                     },
                   ),
                   RoundedPasswordField(
-                    validatePass: (val) => val != _password
-                        ? "Password doesnt match"
-                        : null,
+                    validatePass: (val) =>
+                        val != _password ? "Password doesnt match" : null,
                     obscure: _obscureText,
                     hint: 'Confirm Password',
                     onChanged: (value) {
@@ -346,21 +383,21 @@ class _BodyState extends State<Body> {
                         setState(() {
                           _showloader = true;
                         });
-                        final userPhone ='+'+ selectedCountryCode.callingCodes[0]+ _phone.substring(1);
+                        final userPhone = '+' +
+                            selectedCountryCode.callingCodes[0] +
+                            _phone.substring(1);
                         await _authService
-                            .registerWithEmailAndPass(
-                                _email, _password, nick, userPhone, fullname, selectedUniversity)
+                            .registerWithEmailAndPass(_email, _password, nick,
+                                userPhone, fullname, selectedUniversity)
                             .then((result) {
                           setState(() {
                             _showloader = false;
                           });
                           if (result is User) {
-
                             sharedpref.addBoolToSF(hasUserLogin, true);
                             sharedpref.addStringToSF('email', _email);
                             sharedpref.addStringToSF('password', _password);
                             Navigator.pushReplacementNamed(context, "home");
-
                           } else {
                             Fluttertoast.showToast(
                                 msg: result.toString(),
@@ -374,7 +411,6 @@ class _BodyState extends State<Body> {
                             //   error = result.toString();
                             // });
                           }
-
                         });
                       }
                     },
@@ -388,7 +424,7 @@ class _BodyState extends State<Body> {
                       Navigator.of(context).pushNamed('log-in');
                     },
                   ),
-                  
+
                   // OrDivider(),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,

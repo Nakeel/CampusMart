@@ -16,7 +16,8 @@ class NavButton extends StatelessWidget {
     final verticalAlignment = 1 - length * difference;
     final opacity = length * difference;
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
+        splashColor: Colors.transparent,
         onTap: () {
           onTap(index);
         },

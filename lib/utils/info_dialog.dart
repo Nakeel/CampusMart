@@ -3,13 +3,26 @@ import 'package:campus_mart/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class InfoDialogWidget extends StatefulWidget {
-
-  final String title, description, primaryButtonText, secButtonTxt,infoIcon, infoType;
+  final String title,
+      description,
+      primaryButtonText,
+      secButtonTxt,
+      infoIcon,
+      infoType;
 
   final Function primaryButtonFunc, secButtonFunc;
-  InfoDialogWidget({Key key, this.title, this.description, this.primaryButtonText, this.secButtonTxt, this.infoIcon, this.primaryButtonFunc, this.secButtonFunc, this.infoType, }) : super(key: key);
+  InfoDialogWidget({
+    Key key,
+    this.title,
+    this.description,
+    this.primaryButtonText,
+    this.secButtonTxt,
+    this.infoIcon,
+    this.primaryButtonFunc,
+    this.secButtonFunc,
+    this.infoType,
+  }) : super(key: key);
 
   @override
   _InfoDialogWidgetState createState() => _InfoDialogWidgetState();
@@ -18,7 +31,7 @@ class InfoDialogWidget extends StatefulWidget {
 class _InfoDialogWidgetState extends State<InfoDialogWidget> {
   bool showDialog = false;
 
-  showAgain(bool showDialog)async{
+  showAgain(bool showDialog) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(widget.infoType, showDialog);
   }
@@ -32,7 +45,6 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
         child: Stack(
           children: [
             Container(
-
               padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -57,7 +69,6 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                     minFontSize: 18,
                     maxFontSize: 24,
                     textAlign: TextAlign.center,
-
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
@@ -66,16 +77,25 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                   SizedBox(
                     height: 15,
                   ),
-                  widget.infoIcon ==null ? Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white
-                    ),
-                    child: Icon(Icons.error_outline_outlined,size: 120,color: kPrimaryColor,),
-                  ) : Image.asset(widget.infoIcon,height: 130,width: 130,  )
-                  ,
-                  SizedBox(height: 20,),
+                  widget.infoIcon == null
+                      ? Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: Icon(
+                            Icons.error_outline_outlined,
+                            size: 120,
+                            color: kPrimaryColor,
+                          ),
+                        )
+                      : Image.asset(
+                          widget.infoIcon,
+                          height: 130,
+                          width: 130,
+                        ),
+                  SizedBox(
+                    height: 20,
+                  ),
 
                   AutoSizeText(
                     widget.description,
@@ -92,10 +112,10 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                   Row(
                     children: [
                       Checkbox(
-                        value:showDialog,
+                        value: showDialog,
                         onChanged: (show) {
                           showAgain(showDialog);
-                          setState(()  {
+                          setState(() {
                             showDialog = show;
                           });
                         },
@@ -103,51 +123,52 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                       ),
                       Expanded(
                           child: Text(
-                            'Don\'t show again',
-                            softWrap: true,
-                          ))
+                        'Don\'t show again',
+                        softWrap: true,
+                      ))
                     ],
                   ),
                   SizedBox(
                     height: 10,
                   ),
 
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 10),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     child:
 
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child:  RaisedButton(
-                    //     onPressed: primaryButtonFunc,
-                    //     color: Constants.primaryColor,
-                    //
-                    //     splashColor: Constants.primaryColor.withOpacity(.2),
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(20),
-                    //     ),
-                    //     child: Padding(
-                    //       padding: EdgeInsets.symmetric(horizontal: 20),
-                    //       child: AutoSizeText(
-                    //         primaryButtonText,
-                    //         maxLines: 1,
-                    //         style: GoogleFonts.inter(
-                    //           fontSize: 18,
-                    //           fontWeight: FontWeight.w200,
-                    //           color: Colors.white,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    //
-                    // SizedBox(
-                    //   height: 15,
-                    // ),
-                    Center(
-                      child:  RaisedButton(
+                        // Align(
+                        //   alignment: Alignment.centerRight,
+                        //   child:  RaisedButton(
+                        //     onPressed: primaryButtonFunc,
+                        //     color: Constants.primaryColor,
+                        //
+                        //     splashColor: Constants.primaryColor.withOpacity(.2),
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(20),
+                        //     ),
+                        //     child: Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: 20),
+                        //       child: AutoSizeText(
+                        //         primaryButtonText,
+                        //         maxLines: 1,
+                        //         style: GoogleFonts.inter(
+                        //           fontSize: 18,
+                        //           fontWeight: FontWeight.w200,
+                        //           color: Colors.white,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        //
+                        // SizedBox(
+                        //   height: 15,
+                        // ),
+                        Center(
+                      child: RaisedButton(
                         // onPressed: widget.primaryButtonFunc,
-                        onPressed: (){
-
+                        onPressed: () {
+                          Navigator.of(context).pop();
                         },
                         color: kPrimaryColor,
                         splashColor: kPrimaryColor.withOpacity(.4),
@@ -167,7 +188,6 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                           ),
                         ),
                       ),
-
                     ),
                   ),
                   // showSecondaryButton()
@@ -187,10 +207,8 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
             //     size: 40,
             //   ),
             // ))
-
           ],
-        )
-    );
+        ));
   }
 
   showSecondaryButton() {
