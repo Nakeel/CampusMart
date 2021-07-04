@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
+// ignore: must_be_immutable
 class GridItem extends StatelessWidget {
-  const GridItem(
+  GridItem(
       {Key key,
       this.image,
       this.title,
@@ -12,18 +13,25 @@ class GridItem extends StatelessWidget {
       this.press,
       this.tag,
       this.likePressed,
-      this.isLikedPressed})
+      this.isLikedPressed,
+      this.myAds = false,
+      this.moreOptionPressed,
+      this.views})
       : super(key: key);
 
   final String image, title, school;
-  final String price, tag;
+  final String price, tag, views;
   final Function press, likePressed;
+  final ValueChanged<String> moreOptionPressed;
   final bool isLikedPressed;
+  final bool myAds;
+
+  List<String> popupMenuList = ['Delete Item'];
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print('like '+isLikedPressed.toString());
+    print('like ' + isLikedPressed.toString());
     return Container(
         margin: EdgeInsets.only(
           left: kDefaultPadding,
@@ -62,43 +70,99 @@ class GridItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.button,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(
-                      height: 3,
-                    ),
-                    Text(
-                      school,
-                      style: TextStyle(
-                          fontSize: 12, color: kPrimaryColor.withOpacity(0.5)),
-                      overflow: TextOverflow.ellipsis,
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "\#$price",
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800),
-                        ),
-                        InkWell(
-                            onTap: likePressed,
-                            splashColor: kPrimaryColor,
-                            child: isLikedPressed
-                                ? Icon(
-                                    Icons.favorite,
-                                    color: kPrimaryColor,
-                                  )
-                                : Icon(Icons.favorite_outline,
-                                    color: kPrimaryColor))
-                      ],
-                    ),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    title,
+                                    style: Theme.of(context).textTheme.button,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(
+                                    school,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: kPrimaryColor.withOpacity(0.5)),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    "\#$price",
+                                    style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                ]),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: myAds
+                                ? PopupMenuButton(
+                                    color: Colors.white,
+                                    icon: Icon(
+                                      Icons.more_vert_outlined,
+                                      color: kPrimaryColor,
+                                    ),
+                                    elevation: 20,
+                                    enabled: true,
+                                    onSelected: moreOptionPressed,
+                                    itemBuilder: (context) {
+                                      return popupMenuList.map((String choice) {
+                                        return PopupMenuItem(
+                                          value: choice,
+                                          child: Text("$choice"),
+                                        );
+                                      }).toList();
+                                    })
+                                : InkWell(
+                                    onTap: likePressed,
+                                    splashColor: kPrimaryColor,
+                                    child: isLikedPressed
+                                        ? Icon(
+                                            Icons.favorite,
+                                            color: kPrimaryColor,
+                                          )
+                                        : Icon(Icons.favorite_outline,
+                                            color: kPrimaryColor)),
+                          ),
+                        ]),
+                    SizedBox(height: 4,),
+                    myAds
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Icon(
+                                  Icons.remove_red_eye_sharp,
+                                  color: kPrimaryColor,
+                                  size: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Center(
+                                child: Text(
+                                  '$views Views',
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ),

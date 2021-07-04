@@ -208,7 +208,7 @@ class _UserProfileBodyState extends State<UserProfileBody> {
                       Container(
                         width: size.width,
                         child: Text(
-                          'Sales and Requests',
+                          'Post Ads & Requests',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: "Product Sans",
@@ -228,41 +228,69 @@ class _UserProfileBodyState extends State<UserProfileBody> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Total Sales",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                                Text(
-                                  user.totalSalesAd.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w800),
-                                )
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.of(context).pushNamed('myAds');
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Total Ads",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                  Text(
+                                    user.totalSalesAd.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+
+                                  SizedBox(),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      "View ads",
+                                      style: TextStyle(color: Colors.white,fontSize: 10,),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             Container(
                               height: 50,
                               width: 1,
                               color: Colors.white,
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Total Requests",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  user.totalWantsAd.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w800),
-                                )
-                              ],
+                            InkWell(
+                              onTap: (){
+
+                                Navigator.of(context).pushNamed('myRequest');
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Total Requests",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    user.totalWantsAd.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                  SizedBox(),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      "View requests",
+                                      style: TextStyle(color: Colors.white,fontSize: 10,),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -352,7 +380,7 @@ class _UserProfileBodyState extends State<UserProfileBody> {
                         containerColor: Colors.cyan,
                         icon: Icons.phone,
                         iconColor: Colors.cyan,
-                        showEdit: true,
+                        showEdit: false,
                         infoText: user.phone,
                       ),
                       SizedBox(

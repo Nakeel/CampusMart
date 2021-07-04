@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xFF306948);
 const kPrimaryLightColor = Color(0xFFD4EFDF);
+const Color inputBg = Color(0xffEFF0F6);
+
+const Color darkLilac = Color(0xff4E4B66);
 
 const double kDefaultPadding = 20.0;
 
@@ -33,6 +36,21 @@ const List<String> categoryList = <String>[
   'Accessories',
   'Others'
 ];
+
+ var cardViewDecoration = BoxDecoration(
+  boxShadow: [
+    BoxShadow(
+        color: inputBg,
+        spreadRadius: 2,
+        blurRadius: 3,
+        offset: Offset(0, 2))
+  ],
+  color: Colors.white,
+  borderRadius: new BorderRadius.all(Radius.circular(10)),
+);
+const boldPrimaryTextStyle =
+TextStyle(color: Color(0xff4E4B66), fontWeight: FontWeight.bold);
+
 
 const List<IconData> iconList = [
   Icons.add_shopping_cart_sharp,

@@ -75,7 +75,7 @@ class _UserWantsMainState extends State<UserWantsMain> {
                       arguments: user);
                 },
                 child: Icon(
-                  Icons.add,
+                  Icons.edit,
                   color: Colors.white,
                 ),
                 backgroundColor: kPrimaryColor,

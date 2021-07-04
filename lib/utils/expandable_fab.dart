@@ -80,20 +80,35 @@ class _FancyFabState extends State<FancyFab>
   }
 
   Widget add() {
-    return ColorDot(
-      color: Color(primaryColorString),
+    return  GestureDetector(
+      onTap: () {
+        widget.colorId(primaryColorString);
+      },
+      child: ColorDot(
+        color: Color(primaryColorString),
+      ),
     );
   }
 
   Widget image() {
-    return ColorDot(
-      color: Colors.green,
+    return GestureDetector(
+      onTap: () {
+        widget.colorId(secColorString);
+      },
+      child: ColorDot(
+        color: Colors.green,
+      ),
     );
   }
 
   Widget inbox() {
-    return ColorDot(
-      color:Color(0xFF306948),
+    return GestureDetector(
+      onTap: () {
+        widget.colorId(0xFF306948);
+      },
+      child: ColorDot(
+        color:Color(0xFF306948),
+      ),
     );
   }
 
@@ -105,6 +120,7 @@ class _FancyFabState extends State<FancyFab>
         child: Icon(
           Icons.color_lens_outlined,
           color: Colors.white,
+          size: 30,
         ),
       ),
     );
@@ -117,57 +133,45 @@ class _FancyFabState extends State<FancyFab>
       children: <Widget>[
         Visibility(
           visible: _visible,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                widget.colorId(primaryColorString);
-              });
-            },
-            child: Transform(
-              transform: Matrix4.translationValues(
-                0.0,
-                _translateButton.value * 3.0,
-                0.0,
-              ),
+          // child: Transform(
+          //   transform: Matrix4.translationValues(
+          //     0.0,
+          //     _translateButton.value * 3.0,
+          //     0.0,
+          //   ),
+            child: Padding(
+              padding:  EdgeInsets.only(bottom: 8.0),
               child: add(),
             ),
-          ),
+          // ),
         ),
         Visibility(
           visible: _visible,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                widget.colorId(secColorString);
-              });
-            },
-            child: Transform(
-              transform: Matrix4.translationValues(
-                0.0,
-                _translateButton.value * 2.0,
-                0.0,
-              ),
+          // child: Transform(
+          //   transform: Matrix4.translationValues(
+          //     0.0,
+          //     _translateButton.value * 2.0,
+          //     0.0,
+          //   ),
+            child: Padding(
+              padding:  EdgeInsets.only(bottom: 8.0),
               child: image(),
             ),
-          ),
+          // ),
         ),
         Visibility(
           visible: _visible,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                widget.colorId(primaryLightColorString);
-              });
-            },
-            child: Transform(
-              transform: Matrix4.translationValues(
-                0.0,
-                _translateButton.value,
-                0.0,
-              ),
+          // child: Transform(
+          //   transform: Matrix4.translationValues(
+          //     0.0,
+          //     _translateButton.value,
+          //     0.0,
+          //   ),
+            child: Padding(
+              padding:  EdgeInsets.only(bottom: 8.0),
               child: inbox(),
             ),
-          ),
+          // ),
         ),
         toggle(),
       ],

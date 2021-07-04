@@ -10,6 +10,7 @@ import 'package:campus_mart/models/country_code.dart';
 import 'package:campus_mart/services/auth.dart';
 import 'package:campus_mart/utils/institution.dart';
 import 'package:campus_mart/utils/sharedpref.dart';
+import 'package:campus_mart/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -384,8 +385,8 @@ class _BodyState extends State<Body> {
                           _showloader = true;
                         });
                         final userPhone = '+' +
-                            selectedCountryCode.callingCodes[0] +
-                            _phone.substring(1);
+                            selectedCountryCode.callingCodes[0] + ' ' +
+                            Util.removeFirstZero(_phone);
                         await _authService
                             .registerWithEmailAndPass(_email, _password, nick,
                                 userPhone, fullname, selectedUniversity)

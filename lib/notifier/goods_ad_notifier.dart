@@ -5,14 +5,23 @@ import 'package:flutter/cupertino.dart';
 
 class GoodAdNotifier with ChangeNotifier {
   List<GoodsAd> _goodsAdList = [];
+
+  List<GoodsAd> _goodsAdListById = [];
   GoodsAd _currentgoodsAd;
 
   UnmodifiableListView<GoodsAd> get goodsAdList => UnmodifiableListView(_goodsAdList);
+  UnmodifiableListView<GoodsAd> get goodsAdListById => UnmodifiableListView(_goodsAdListById);
 
   GoodsAd get currentGoods => _currentgoodsAd;
 
   set goodsAdList(List<GoodsAd> goodsAdList) {
     _goodsAdList = goodsAdList;
+    notifyListeners();
+  }
+
+  set goodsAdListById(List<GoodsAd> goodsAdList) {
+    print('Notified ${_goodsAdListById.length}');
+    _goodsAdListById = goodsAdList;
     notifyListeners();
   }
 

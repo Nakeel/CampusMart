@@ -49,6 +49,7 @@ class _AddAdPostMainState extends State<AddAdPostMain> {
 
   @override
   void initState() {
+    selectedCategory = categoryList[0];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 1), () => isShowDialogAgain());
       // getUserData();

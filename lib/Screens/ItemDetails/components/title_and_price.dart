@@ -19,7 +19,7 @@ class TitleAndPrice extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 20,
+            flex: 7,
                       child: RichText(
               text: TextSpan(
                 children: [
@@ -41,7 +41,7 @@ class TitleAndPrice extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
                       child: Text(
               "\u{20A6}$price",
               style: Theme.of(context)

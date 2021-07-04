@@ -8,6 +8,7 @@ import 'package:campus_mart/Screens/wants/user_wants_main.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/user.dart';
 import 'package:campus_mart/models/user_info.dart';
+import 'package:campus_mart/notifier/auth_notifier.dart';
 import 'package:campus_mart/reusablewidget/custom_dialog.dart';
 import 'package:campus_mart/services/auth.dart';
 import 'package:campus_mart/services/database.dart';
@@ -129,8 +130,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
 
+    final authNotifier = Provider.of<AuthNotifier>(context);
+
     Size size = MediaQuery.of(context).size;
     print('Selected ' + _selectedIndex.toString());
+    final uid = userData?.uid ?? 'uid';
     // saveUserID(userData.uid);
     // final user = Provider.of<CustomUserInfo>(context);
 
@@ -216,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: StreamProvider<CustomUserInfo>.value(
-              value: DatabaseService().userData(userData.uid),
+              value: DatabaseService().userData(uid, authNotifier),
               child: LoadingOverlay(
                   isLoading: _isLoading, child: _buildBody(_selectedIndex))),
           bottomNavigationBar: CurvedNavigationBar(
@@ -353,20 +357,22 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       elevation: 2,
       actions: [
-        Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            // ignore: missing_required_param
-            child:
-                // IconButton(
-                //   onPressed: () {},
-                //   icon: Icon(
-                //     Icons.shopping_cart,
-                //     color: Colors.white,
-                //   ),
-                // ),
-                Container(
-              width: 40,
-            ))
+        // Padding(
+        //     padding: const EdgeInsets.only(right: 8.0),
+        //     // ignore: missing_required_param
+        //     child:
+        //     _selectedIndex == 3 ? IconButton(
+        //           onPressed: () {
+        //             Navigator.of(context).pushNamed('settings');
+        //           },
+        //           icon: Icon(
+        //             Icons.settings,
+        //             color: Colors.white,
+        //           ),
+        //         ) :
+        //         Container(
+        //       width: 40,
+        //     ))
       ],
       title: Center(child: Text(_currentScreen)),
       leading: IconButton(

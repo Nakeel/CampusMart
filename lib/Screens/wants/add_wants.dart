@@ -219,7 +219,6 @@ class _AddWantsMainState extends State<AddWantsMain> {
                                     widget.user.profileImgUrl,
                                     widget.user.profileImgHash,
                                     widget.user.phone,
-                                    selectedCategory,
                                     false,
                                     false)
                                 .then((result) {
@@ -239,7 +238,7 @@ class _AddWantsMainState extends State<AddWantsMain> {
                                       builder: (context) => CustomDialog(
                                           title: 'Post Successfully added',
                                           description:
-                                              'You successfully added a new sales ad will run for a period of 15days if sold before then please notify',
+                                              'Your product request has been successfully posted. Cheers',
                                           primaryButtonText: 'Close',
                                           primaryButtonFunc: () {
                                             Navigator.of(context).pop();
@@ -301,61 +300,61 @@ class _AddWantsMainState extends State<AddWantsMain> {
                   width: size.width,
                   child: Stack(
                     children: [
-                      Positioned(
-                        bottom: 5,
-                        child: Container(
-                          // height: size.height * 0.4,
-                          width: size.width * 0.7,
-
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15, bottom: 10),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          'Pick Category',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Container(
-                                          width: size.width * 0.2,
-                                          height: 2,
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: _iconList
-                                          .asMap()
-                                          .entries
-                                          .map(
-                                            (e) => _buildIcon(e.key),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: 5,
+                      //   child: Container(
+                      //     // height: size.height * 0.4,
+                      //     width: size.width * 0.7,
+                      //
+                      //     child: Align(
+                      //       alignment: Alignment.bottomLeft,
+                      //       child: Padding(
+                      //         padding:
+                      //             const EdgeInsets.only(left: 15, bottom: 10),
+                      //         child: Column(
+                      //           mainAxisAlignment:
+                      //               MainAxisAlignment.spaceAround,
+                      //           children: [
+                      //             Column(
+                      //               children: [
+                      //                 Center(
+                      //                   child: Text(
+                      //                     'Pick Category',
+                      //                     style: TextStyle(
+                      //                         fontSize: 16,
+                      //                         color: Colors.white,
+                      //                         fontWeight: FontWeight.w400),
+                      //                   ),
+                      //                 ),
+                      //                 Center(
+                      //                   child: Container(
+                      //                     width: size.width * 0.2,
+                      //                     height: 2,
+                      //                     color: Colors.white,
+                      //                   ),
+                      //                 )
+                      //               ],
+                      //             ),
+                      //             SingleChildScrollView(
+                      //               scrollDirection: Axis.horizontal,
+                      //               child: Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.spaceBetween,
+                      //                 children: _iconList
+                      //                     .asMap()
+                      //                     .entries
+                      //                     .map(
+                      //                       (e) => _buildIcon(e.key),
+                      //                     )
+                      //                     .toList(),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
 
                       // ),
                       // child:
@@ -365,7 +364,7 @@ class _AddWantsMainState extends State<AddWantsMain> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding: EdgeInsets.only(right: 10, bottom: 20),
+                          padding: EdgeInsets.only(right: 20, bottom: 20),
                           child: Container(
                             margin: EdgeInsets.only(bottom: 20, top: 60),
                             child:

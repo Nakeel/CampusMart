@@ -1,6 +1,7 @@
 import 'package:campus_mart/models/goods_ad_data.dart';
 import 'package:campus_mart/models/user_info.dart';
 import 'package:campus_mart/models/wants_data.dart';
+import 'package:campus_mart/notifier/auth_notifier.dart';
 import 'package:campus_mart/notifier/goods_ad_notifier.dart';
 import 'package:campus_mart/notifier/wants_notifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,6 +40,15 @@ class DatabaseService {
         .doc(uid)
         .update({'totalSalesAd': FieldValue.increment(1)});
   }
+  Future deleteAd(String itemId) async {
+    return await goodPostCollection
+        .doc(itemId).delete();
+  }
+
+  Future deleteWants(String itemId) async {
+    return await wantsCollection
+        .doc(itemId).delete();
+  }
 
   Future updateUserWantsAdData(String uid) async {
     return await userCollection
@@ -56,7 +66,6 @@ class DatabaseService {
       String userImgUrl,
       String userImgHash,
       String phone,
-      String category,
       bool isBought,
       bool isPromoted) async {
     await wantsCollection.doc(uuid).set({
@@ -70,7 +79,6 @@ class DatabaseService {
         'datePosted': datePosted,
         'userImgUrl': userImgUrl,
         'userImgHash': userImgHash,
-        'category': category,
         'isBought': isBought,
         'isPromoted': isPromoted
       }
@@ -153,9 +161,30 @@ class DatabaseService {
   getWants(WantsNotifier wantNotifier) async {
     QuerySnapshot wantsDoc = await wantsCollection.get();
     List<Wants> _wantList = [];
+    if(wantsDoc != null) {
+      wantsDoc.docs.forEach((doc) {
+        Map<String, dynamic> listWantsData = doc.data();
+        print("Wants " + listWantsData.length.toString());
+        var listWants = listWantsData.values.toList();
+        listWants.forEach((wantItem) {
+          print("Wants2 " + wantItem.length.toString());
+          Wants want = Wants.fromMap(wantItem);
+          _wantList.add(want);
+        });
+      });
+    }
+    print("Wants3 " + _wantList.length.toString());
+    wantNotifier.wantList = _wantList;
+  }
 
-    wantsDoc.docs.forEach((doc) {
-      Map<String, dynamic> listWantsData = doc.data();
+  Future<void> getWantsById(WantsNotifier wantNotifier, String id) async {
+    DocumentSnapshot wantsDoc = await wantsCollection.doc(id).get();
+    List<Wants> _wantList = [];
+
+
+      Map<String, dynamic> listWantsData = wantsDoc.data();
+
+    if(_wantList.isNotEmpty) {
       print("Wants " + listWantsData.length.toString());
       var listWants = listWantsData.values.toList();
       listWants.forEach((wantItem) {
@@ -163,26 +192,50 @@ class DatabaseService {
         Wants want = Wants.fromMap(wantItem);
         _wantList.add(want);
       });
-    });
-    print("Wants3 " + _wantList.length.toString());
-    wantNotifier.wantList = _wantList;
+
+      print("Wants3 " + _wantList.length.toString());
+    }
+    wantNotifier.wantListById = _wantList;
+    return ;
   }
+
+  Future<void> getGoodAdsById(GoodAdNotifier goodAdNotifier, String id) async {
+    DocumentSnapshot goodAdsDoc = await goodPostCollection.doc(id).get();
+    List<GoodsAd> _goodAdList1 = [];
+
+
+      Map<String, dynamic> listGoodAdsData = goodAdsDoc.data();
+      if(listGoodAdsData != null) {
+        print("GoodAds " + listGoodAdsData.length.toString());
+        var listWants = listGoodAdsData.values.toList();
+        listWants.forEach((goodAdItem) {
+          print("goodAd2 " + goodAdItem.length.toString());
+          GoodsAd goodAd = GoodsAd.fromMap(goodAdItem);
+          _goodAdList1.add(goodAd);
+        });
+      }
+    goodAdNotifier.goodsAdListById = _goodAdList1.toList();
+    return;
+  }
+
+
 
   getGoodAds(GoodAdNotifier goodAdNotifier) async {
     QuerySnapshot goodAdsDoc = await goodPostCollection.get();
     List<GoodsAd> _goodAdList = [];
 
-    goodAdsDoc.docs.forEach((doc) {
-      Map<String, dynamic> listGoodAdsData = doc.data();
-      print("GoodAds " + listGoodAdsData.length.toString());
-      var listWants = listGoodAdsData.values.toList();
-      listWants.forEach((goodAdItem) {
-        print("goodAd2 " + goodAdItem.length.toString());
-        GoodsAd goodAd = GoodsAd.fromMap(goodAdItem);
-        _goodAdList.add(goodAd);
+    if(goodAdsDoc != null) {
+      goodAdsDoc.docs.forEach((doc) {
+        Map<String, dynamic> listGoodAdsData = doc.data();
+        print("GoodAds " + listGoodAdsData.length.toString());
+        var listWants = listGoodAdsData.values.toList();
+        listWants.forEach((goodAdItem) {
+          print("goodAd2 " + goodAdItem.length.toString());
+          GoodsAd goodAd = GoodsAd.fromMap(goodAdItem);
+          _goodAdList.add(goodAd);
+        });
       });
-    });
-    print("goodAds3 " + _goodAdList.length.toString());
+    }
     goodAdNotifier.goodsAdList = _goodAdList;
   }
 
@@ -192,11 +245,25 @@ class DatabaseService {
   }
 
   //user stream
-  Stream<CustomUserInfo> userData(String uid) {
+  Stream<CustomUserInfo> userData(String uid, AuthNotifier authNotifier)  {
     if (uid != null) {
+
+      userData1(uid, authNotifier);
       return userCollection.doc(uid).snapshots().map(_userDataFromSnapShot);
     }else{
       return null;
+    }
+  }
+
+  //user stream
+  userData1(String uid, AuthNotifier authNotifier) async{
+    if (uid != null) {
+      DocumentSnapshot snap =  await userCollection.doc(uid).get();
+      if(snap != null){
+        authNotifier.userDoc = CustomUserInfo.fromMap(snap.data());
+      }
+    }else{
+    return null;
     }
   }
 }

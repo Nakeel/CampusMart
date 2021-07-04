@@ -44,81 +44,108 @@ class _BodyState extends State<Body> {
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "Login",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Center(
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  ),
                 ),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                SvgPicture.asset(
-                  "assets/icons/login.svg",
-                  height: size.height * 0.35,
+                Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/login.svg",
+                    height: size.height * 0.3,
+                  ),
                 ),
-                RoundedInputField(
-                  validateEmail: (val) => (!val.contains("@") && val.isEmpty)
-                      ? "Enter a valid email address"
-                      : null,
-                  hintText: "Your Email",
-                  onChanged: (value) {
-                    setState(() {
-                      _email = value;
-                    });
-                  },
-                ),
-                RoundedPasswordField(
-                  validatePass: (val) => val.length < 6
-                      ? "Password must be atleast 6 characters"
-                      : null,
-                  obscure: _obscureText,
-                  onChanged: (value) {
-                    setState(() {
-                      _password = value;
-                    });
-                  },
-                  showPass: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-                RoundedButton(
-                  text: "Login",
-                  press: () async {
-                    if (_formKey.currentState.validate()) {
+                Center(
+                  child: RoundedInputField(
+                    validateEmail: (val) => (!val.contains("@") && val.isEmpty)
+                        ? "Enter a valid email address"
+                        : null,
+                    hintText: "Your Email",
+                    onChanged: (value) {
                       setState(() {
-                        _showloader = true;
+                        _email = value;
                       });
-                      await _authService
-                          .signInWithEmailAndPass(_email, _password)
-                          .then((result) {
-                            setState(() {
-                              _showloader = false;
-                          });
-                        if (result is User) {
-
-                          sharedpref.addBoolToSF(hasUserLogin, true);
-                          sharedpref.addStringToSF('email', _email);
-                          sharedpref.addStringToSF('password', _password);
-                          Navigator.pushReplacementNamed(context, "home");
-
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: result.toString(),
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                          // setState(() {
-                          //   error = result.toString();
-                          // });
-                        }
+                    },
+                  ),
+                ),
+                Center(
+                  child: RoundedPasswordField(
+                    validatePass: (val) => val.length < 6
+                        ? "Password must be atleast 6 characters"
+                        : null,
+                    obscure: _obscureText,
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value;
                       });
-                    }
-                  },
+                    },
+                    showPass: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:  EdgeInsets.only(left: 40),
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed('forgotPassword');
+                    },
+                    child: Text(
+                     "Forgot Password",
+                      style:  TextStyle(
+                          fontWeight:  FontWeight.bold,
+                          color: kPrimaryColor
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Center(
+                  child: RoundedButton(
+                    text: "Login",
+                    press: () async {
+                      if (_formKey.currentState.validate()) {
+                        setState(() {
+                          _showloader = true;
+                        });
+                        await _authService
+                            .signInWithEmailAndPass(_email, _password)
+                            .then((result) {
+                              setState(() {
+                                _showloader = false;
+                            });
+                          if (result is User) {
+
+                            sharedpref.addBoolToSF(hasUserLogin, true);
+                            sharedpref.addStringToSF('email', _email);
+                            sharedpref.addStringToSF('password', _password);
+                            Navigator.pushReplacementNamed(context, "home");
+
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: result.toString(),
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            // setState(() {
+                            //   error = result.toString();
+                            // });
+                          }
+                        });
+                      }
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: size.height * 0.03,

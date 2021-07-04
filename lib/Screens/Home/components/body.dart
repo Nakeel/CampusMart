@@ -123,10 +123,14 @@ class _BodyState extends State<Body> {
               RecommendedItems(
                 goodsList: goodsNotifier.goodsAdList,
               ),
-              TitleWithMoreBtn(title: "Buyers Request", press: () {}),
-              FeaturedItems(
-                listWants: wantsNotifier.wantList,
-              ),
+              wantsNotifier.wantList.isNotEmpty ? Column(
+                children: [
+                  TitleWithMoreBtn(title: "Buyers Request", press: () {}),
+                  FeaturedItems(
+                    listWants: wantsNotifier.wantList,
+                  ),
+                ],
+              ) : Container(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 25.0, horizontal: 0.0),

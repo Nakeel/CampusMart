@@ -169,14 +169,16 @@ class _WantUserInfoDialogWidgetState extends State<WantUserInfoDialogWidget> {
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400)),
-                      Text(widget.wantItem.university,
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600)),
+                      Expanded(
+                        child: Text(widget.wantItem.university,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600)),
+                      ),
                     ],
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Row(
                     children: [
