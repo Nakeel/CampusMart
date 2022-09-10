@@ -374,6 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //       width: 40,
         //     ))
       ],
+      backgroundColor: kPrimaryColor,
       title: Center(child: Text(_currentScreen)),
       leading: IconButton(
         icon: SvgPicture.asset("assets/icons/menu.svg"),

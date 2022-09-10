@@ -268,21 +268,21 @@ class _BodyState extends State<Body> {
                   onStepTapped: (step) => goto(step),
                   steps: steps,
                   // type: StepperType.horizontal,
-                  controlsBuilder: (context, {onStepCancel, onStepContinue}) {
+                  controlsBuilder: (BuildContext context, ControlsDetails controls) {
                     return Row(
                       children: [
                         MiniRoundedButton(
                             text: buttontext,
                             color: kPrimaryColor,
                             textColor: Colors.white,
-                            press: onStepContinue),
+                            press: controls.onStepContinue),
                         Visibility(
                           visible: (currentStep != 0),
                           child: MiniRoundedButton(
                               text: "Back",
                               color: kPrimaryLightColor,
                               textColor: Colors.black,
-                              press: onStepCancel),
+                              press: controls.onStepCancel),
                         ),
                       ],
                     );

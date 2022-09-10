@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:campus_mart/Screens/Login/components/already_have_acct_check.dart';
 import 'package:campus_mart/Screens/Login/components/rounded_input_field.dart';
 import 'package:campus_mart/Screens/Login/components/rounded_password_field.dart';
@@ -5,6 +6,7 @@ import 'package:campus_mart/Screens/Signup/components/background.dart';
 import 'package:campus_mart/Screens/Signup/components/or_divider.dart';
 import 'package:campus_mart/Screens/Signup/components/social_icon.dart';
 import 'package:campus_mart/components/round_button.dart';
+import 'package:campus_mart/components/searchable_item_screen.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/country_code.dart';
 import 'package:campus_mart/services/auth.dart';
@@ -16,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+// import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class Body extends StatefulWidget {
   final Widget child;
@@ -69,33 +71,39 @@ class _BodyState extends State<Body> {
     super.initState();
   }
 
-  Widget getSearchableDropdown(List<String> listData) {
-    List<DropdownMenuItem> items = [];
-    for (int i = 0; i < listData.length; i++) {
-      items.add(new DropdownMenuItem(
-        child: new Text(
-          listData[i],
-        ),
-        value: listData[i],
+
+
+  getSearchableDropdown(List<String> listData) async {
+    print('list $listData');
+    try {
+      final val = await Navigator.of(context).push(PageRouteBuilder(
+        opaque: false, // s
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            SearchableItemWidget(
+              items: listData,
+            ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = Offset(0.0, 1.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+
+          var tween =
+          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
       ));
-    }
-    return SearchableDropdown(
-      items: items,
-      isExpanded: true,
-      underline: SizedBox(),
-      value: selectedUniversity,
-      isCaseSensitiveSearch: false,
-      hint: new Text('Select Institution'),
-      searchHint: new Text(
-        'Search Institution',
-        style: new TextStyle(fontSize: 20),
-      ),
-      onChanged: (value) {
+      if (val != null) {
         setState(() {
-          selectedUniversity = value;
+          selectedUniversity = val;
         });
-      },
-    );
+      }
+    } catch (e) {
+      print('Error $e');
+    }
   }
 
   @override
@@ -288,60 +296,83 @@ class _BodyState extends State<Body> {
                       });
                     },
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    width: size.width * 0.8,
-                    decoration: BoxDecoration(
-                      // color: Colors.white,
-                      color: kPrimaryLightColor,
+                  GestureDetector(
+                    onTap: (){
+                      getSearchableDropdown(institutionList);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 15),
+                      width: size.width * 0.85,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        // shape: BoxShape.circle,
 
-                      border: Border.all(width: 1, color: Colors.grey[500]),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(3.0, 3.0),
+                            blurRadius: 10.0,
+                            spreadRadius: 2.0,
+                            color: kPrimaryColor.withOpacity(0.3),
+                          )
+                        ],
                       ),
-                      // shape: BoxShape.circle,
-
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     offset: const Offset(3.0, 3.0),
-                      //     blurRadius: 10.0,
-                      //     spreadRadius: 2.0,
-                      //     color: kPrimaryColor.withOpacity(0.3),
-                      //   )
-                      // ],
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: AutoSizeText(
+                              selectedUniversity ?? 'Select',
+                              minFontSize: 16,
+                              maxFontSize: 20,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: selectedUniversity!=null ? Colors.black: Colors.grey.withOpacity(.6),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ),
+                          Icon(Icons.keyboard_arrow_down, color: Colors.grey.withOpacity(.8),)
+                        ],
+                      ),
+                      // child: DropdownButtonHideUnderline(
+                      //   child: DropdownButton<String>(
+                      //     isExpanded: true,
+                      //     hint: Text(
+                      //       "Choose nearest Institution",
+                      //       style: TextStyle(
+                      //           color: Colors.black87,
+                      //           fontSize: 14,
+                      //           fontWeight: FontWeight.w500),
+                      //     ),
+                      //     value: selectedUniversity,
+                      //     iconEnabledColor: kPrimaryColor,
+                      //     onChanged: (String selectedInstitution) {
+                      //       setState(() {
+                      //         selectedUniversity =
+                      //             selectedInstitution;
+                      //       });
+                      //     },
+                      //     items: institutionList.map((String user) {
+                      //       return DropdownMenuItem<String>(
+                      //           value: user,
+                      //           child: Text(
+                      //             user,
+                      //             overflow: TextOverflow.ellipsis,
+                      //             style: TextStyle(
+                      //                 color: Colors.black87,
+                      //                 fontSize: 14,
+                      //                 fontWeight: FontWeight.w500),
+                      //           ));
+                      //     }).toList(),
+                      //   ),
+                      // ),
                     ),
-                    // child: DropdownButtonHideUnderline(
-                    //   child: DropdownButton<String>(
-                    //     isExpanded: true,
-                    //     hint: Text(
-                    //       "Select Institution",
-                    //       style: TextStyle(
-                    //           color: Colors.black87,
-                    //           fontSize: 15,
-                    //           fontWeight: FontWeight.w500),
-                    //     ),
-                    //     value: selectedUniversity,
-                    //     iconEnabledColor: kPrimaryColor,
-                    //     onChanged: (String Value) {
-                    //       setState(() {
-                    //         selectedUniversity = Value;
-                    //       });
-                    //     },
-                    //     items: institutionList.map((String user) {
-                    //       return DropdownMenuItem<String>(
-                    //           value: user,
-                    //           child: Text(
-                    //             user,
-                    //             style: TextStyle(
-                    //                 color: Colors.black87,
-                    //                 fontSize: 15,
-                    //                 fontWeight: FontWeight.w400),
-                    //           ));
-                    //     }).toList(),
-                    //   ),
-                    // ),
-                    child: getSearchableDropdown(institutionList),
                   ),
 
                   RoundedPasswordField(

@@ -140,12 +140,14 @@ class FeatureItems extends StatelessWidget {
                                     //         ),
                                     //       ),
 
-                                    Image(
-                                  image: NetworkImage(userImgUrl),
+                                Image.network(userImgUrl,
                                   width: 25,
                                   height: 25,
                                   fit: BoxFit.cover,
-                                ),
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                                  return Icon(Icons.person,color: Colors.black,);
+                                },),
+                                
                               ),
                             )),
                         Text(

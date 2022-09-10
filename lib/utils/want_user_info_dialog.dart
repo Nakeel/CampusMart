@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:campus_mart/constants.dart';
 import 'package:campus_mart/models/wants_data.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,7 @@ class _WantUserInfoDialogWidgetState extends State<WantUserInfoDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -142,21 +144,29 @@ class _WantUserInfoDialogWidgetState extends State<WantUserInfoDialogWidget> {
                                   ),
                           )),
                       SizedBox(width: 10,),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.wantItem.fullname,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600
+
+                      SizedBox(
+                        width: size.width * .4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AutoSizeText(
+                              widget.wantItem.fullname,
+                              maxLines: 2,
+                              minFontSize: 12,
+                              maxFontSize: 15,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600
+                              ),
                             ),
-                          ),
-                          Text(widget.wantItem.phone,
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400)),
-                        ],
+                            Text(
+                                widget.wantItem.phone,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          ],
+                        ),
                       )
                     ],
                   ),
